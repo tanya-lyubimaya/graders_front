@@ -60,6 +60,7 @@
               placeholder="Выберите дату и время"
             />
           </el-col>
+          <!--
           <el-col :span="7">
             <p>ID грейдера</p>
             <el-date-picker
@@ -69,6 +70,7 @@
               placeholder="Например: 1234"
             />
           </el-col>
+          -->
         </el-form-item>
         <el-form-item>
           <el-col :span="7">
@@ -133,9 +135,9 @@
             :limit="1"
             :on-exceed="handleExceed"
           >
-          <div>
-            <el-button size="small">Загрузить</el-button>
-          </div>
+            <div>
+              <el-button size="small">Загрузить</el-button>
+            </div>
           </el-upload>
         </el-form-item>
 
@@ -170,15 +172,13 @@ export default {
       console.log(file);
     },
     handleExceed(files, fileList) {
-      this.$message.warning(
-        `Лимит количества загруженных файлов достигнут`
-      );
+      this.$message.warning(`Лимит количества загруженных файлов достигнут`);
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`Удалить файл ${file.name} ?`);
     },
     onSubmit() {
-      this.$message('Грейдер создан!')
+      this.$message("Грейдер создан!");
     },
   },
 };
