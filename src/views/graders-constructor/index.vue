@@ -91,17 +91,56 @@
           <el-col :span="7">
             <p>Попыток сдать</p>
             <el-input-number
-              v-model="form.num_of_attempts"
+              v-model="form.NumOfAttempts"
               @change="handleChange"
               :min="1"
               :max="100"
+              size="medium"
+              style="width: 87%"
             ></el-input-number>
           </el-col>
         </el-form-item>
+        <el-form-item>
+          <p>
+            Файл для обработки
+            <span style="color: #f00">*</span>
+          </p>
+          <el-upload
+            class="upload-demo"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            multiple
+            :limit="1"
+            :on-exceed="handleExceed"
+          >
+            <el-button size="small">Загрузить</el-button>
+          </el-upload>
+        </el-form-item>
+        <el-form-item>
+          <p>
+            Файл результата
+            <span style="color: #f00">*</span>
+          </p>
+          <el-upload
+            class="upload-demo"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            multiple
+            :limit="1"
+            :on-exceed="handleExceed"
+          >
+          <div>
+            <el-button size="small">Загрузить</el-button>
+          </div>
+          </el-upload>
+        </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">Create</el-button>
-          <el-button @click="onCancel">Cancel</el-button>
+          <el-button type="primary" @click="onSubmit">Создать</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -116,13 +155,30 @@ export default {
   data() {
     return {
       form: {
-        num_of_attempts: 1,
+        NumOfAttempts: 1,
       },
     };
   },
   methods: {
     handleChange(value) {
       console.log(value);
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `Лимит количества загруженных файлов достигнут`
+      );
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`Удалить файл ${file.name} ?`);
+    },
+    onSubmit() {
+      this.$message('Грейдер создан!')
     },
   },
 };
