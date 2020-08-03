@@ -9,9 +9,9 @@
     </div>
   
     <div class="container">
-      <h3 class="title">Заполните данные для создания грейдера</h3>
       <el-form ref="form" :model="form" label-width="120px">
         <el-form-item>
+          <h3 class="title">Заполните данные для создания грейдера</h3>
           <p>
             Выберите курс в Classroom
             <span style="color: #f00">*</span>
