@@ -26,8 +26,8 @@ h3 {
 .buttonCreate, .buttonCancel {
     font-size: 0.8rem;
     border-radius: 0.2rem;
-    width: 12rem;
-    height: 2.6rem;
+    width: 9rem;
+    height: 2rem;
 }
 
 .buttonCreate {
@@ -43,13 +43,11 @@ h3 {
 .el-input__inner {
     height: 2.8rem;
     border-radius: 0.2rem;
-    width: 24.6rem;
-
     font-size: 0.8rem;
 }
 
 label {
-    font-size: 1em;
+    font-size: 1rem;
 }
 
 span#star {
@@ -57,9 +55,24 @@ span#star {
 }
 
 .el-form-item__content {
-    font-size: 1em;
+    font-size: 1rem;
 }
 
-.el-date-editor--date .el-input__inner, .el-date-editor--time .el-input__inner{
-    width: 11rem;
+.el-date-editor--date .el-input__inner, .el-date-editor--time .el-input__inner, .el-input-number .el-input__inner, .el-textarea .el-textarea__inner{
+    height: 2.6rem;
 }
+
+.el-input-number--medium .el-input-number__increase,  .el-input-number--medium .el-input-number__decrease {
+    height: 2.5rem;
+    line-height: 2.5rem;
+    width: 2.5rem;
+    display: block;
+    justify-content: center;
+}
+
+.el-textarea__inner{
+    border-radius: 0.2rem;
+    font-size: 0.8rem;
+    line-height: 2.8em;
+}
+
