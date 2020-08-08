@@ -7,7 +7,7 @@
         </a>
       </section>
     </div>
-  
+
     <div class="container">
       <el-form ref="form" :model="form" label-width="120px">
         <el-form-item>
@@ -26,7 +26,11 @@
             Укажите название задания
             <span style="color: #f00">*</span>
           </p>
-          <el-input style="width: 50%" v-model="form.taskname" placeholder="Например: Контрольная работа 1"></el-input>
+          <el-input
+            style="width: 50%"
+            v-model="form.taskname"
+            placeholder="Например: Контрольная работа 1"
+          ></el-input>
         </el-form-item>
         <el-form-item>
           <p>
@@ -136,6 +140,8 @@
             multiple
             :limit="1"
             :on-exceed="handleExceed"
+            :ref="fileResult"
+            :on-success="handleSuccess"
           >
             <div>
               <el-button class="buttonCancel" size="small">Загрузить</el-button>
@@ -161,6 +167,7 @@ export default {
       form: {
         NumOfAttempts: 1,
       },
+      fileResult: "",
     };
   },
   methods: {
@@ -176,10 +183,30 @@ export default {
     handleExceed(files, fileList) {
       this.$message.warning(`Лимит количества загруженных файлов достигнут`);
     },
+    handleSuccess(file) {
+      this.fileResult = file;
+    },
     beforeRemove(file, fileList) {
       return this.$confirm(`Удалить файл ${file.name} ?`);
     },
     onSubmit() {
+      const formData = new FormData();
+      formData.append("file", this.fileResult);
+      console.log('POSTED FILE')
+      axios
+        .post("http://localhost:5000/file-result", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          //.post('http://localhost:5000/file-result', {
+          //'file': 'haha'
+        })
+        .then(function () {
+          console.log("SUCCESS!!");
+        })
+        .catch(function () {
+          console.log("FAILURE!!");
+        });
       this.$message("Грейдер создан!");
     },
   },
