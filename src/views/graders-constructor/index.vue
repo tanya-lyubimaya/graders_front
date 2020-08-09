@@ -133,7 +133,9 @@
           </p>
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action=""
+            :auto-upload="false"
+            :http-request="handleSuccess"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :before-remove="beforeRemove"
@@ -198,8 +200,6 @@ export default {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          //.post('http://localhost:5000/file-result', {
-          //'file': 'haha'
         })
         .then(function () {
           console.log("SUCCESS!!");
