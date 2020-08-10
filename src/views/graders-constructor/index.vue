@@ -134,7 +134,7 @@
           <el-upload
             class="upload-demo"
             action=""
-            :auto-upload="false"
+            :auto-upload="true"
             :http-request="handleSuccess"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
@@ -142,7 +142,6 @@
             multiple
             :limit="1"
             :on-exceed="handleExceed"
-            :ref="fileResult"
             :on-success="handleSuccess"
           >
             <div>
@@ -169,7 +168,7 @@ export default {
       form: {
         NumOfAttempts: 1,
       },
-      fileResult: "",
+      file: "",
     };
   },
   methods: {
@@ -186,14 +185,15 @@ export default {
       this.$message.warning(`Лимит количества загруженных файлов достигнут`);
     },
     handleSuccess(file) {
-      this.fileResult = file;
+      this.file = file
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`Удалить файл ${file.name} ?`);
     },
     onSubmit() {
-      const formData = new FormData();
-      formData.append("file", this.fileResult);
+      console.log(this.file)
+      let formData = new FormData();
+      formData.append("file", this.file);
       console.log('POSTED FILE')
       axios
         .post("http://localhost:5000/file-result", formData, {
