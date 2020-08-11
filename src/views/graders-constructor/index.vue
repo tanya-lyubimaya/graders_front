@@ -113,45 +113,17 @@
             Файл для обработки
             <span style="color: #f00">*</span>
           </p>
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            multiple
-            :limit="1"
-            :on-exceed="handleExceed"
-          >
-            <el-button class="buttonCancel" size="small">Загрузить</el-button>
-          </el-upload>
+          <input type="file" id="file" ref="fileProcessing" v-on:change="handleProcessingFileUpload()" />
         </el-form-item>
         <el-form-item>
           <p>
             Файл результата
             <span style="color: #f00">*</span>
           </p>
-          <el-upload
-            class="upload-demo"
-            action=""
-            :auto-upload="true"
-            :http-request="handleSuccess"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            multiple
-            :limit="1"
-            :on-exceed="handleExceed"
-            :on-success="handleSuccess"
-          >
-            <div>
-              <el-button class="buttonCancel" size="small">Загрузить</el-button>
-            </div>
-          </el-upload>
+          <input type="file" id="file" ref="fileResult" v-on:change="handleResultFileUpload()" />
         </el-form-item>
-
         <el-form-item>
-          <el-button class="buttonCreate" type="primary" @click="onSubmit">Создать</el-button>
+          <el-button class="buttonCreate" type="primary" @click="onSubmit()">Создать</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -168,33 +140,24 @@ export default {
       form: {
         NumOfAttempts: 1,
       },
-      file: "",
+      fileProcessing: "",
+      fileResult: "",
     };
   },
   methods: {
+    handleProcessingFileUpload() {
+      this.fileProcessing = this.$refs.fileProcessing.files[0]
+    },
+    handleResultFileUpload() {
+      this.fileResult = this.$refs.fileResult.files[0]
+    },
     handleChange(value) {
       console.log(value);
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(`Лимит количества загруженных файлов достигнут`);
-    },
-    handleSuccess(file) {
-      this.file = file
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`Удалить файл ${file.name} ?`);
-    },
     onSubmit() {
-      console.log(this.file)
       let formData = new FormData();
-      formData.append("file", this.file);
-      console.log('POSTED FILE')
+      formData.append('files', this.fileProcessing)
+      formData.append('files', this.fileResult)
       axios
         .post("http://localhost:5000/file-result", formData, {
           headers: {
