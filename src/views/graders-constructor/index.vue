@@ -66,17 +66,15 @@
               placeholder="Выберите дату и время"
             />
           </el-col>
-          <!--
           <el-col :span="7">
-            <p>ID грейдера</p>
-            <el-date-picker
-              v-model="form.grader_id"
-              type="datetime"
+            <p>Название файла решения</p>
+            <el-input
+              v-model="form.result_filename"
+              type="textarea"
               style="width: 100%"
-              placeholder="Например: 1234"
+              placeholder="Название файла решения"
             />
           </el-col>
-          -->
         </el-form-item>
         <el-form-item>
           <el-col :span="7">
