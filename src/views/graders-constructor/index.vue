@@ -48,7 +48,7 @@
           <el-col :span="7">
             <p>Дата и время выдачи заданий</p>
             <el-date-picker
-              v-model="form.time_post_tasks"
+              v-model="form.timePostTasks"
               type="datetime"
               style="width: 90%"
               placeholder="Выберите дату и время"
@@ -60,7 +60,7 @@
               <span style="color: #f00">*</span>
             </p>
             <el-date-picker
-              v-model="form.time_deadline"
+              v-model="form.timeDeadline"
               type="datetime"
               style="width: 90%"
               placeholder="Выберите дату и время"
@@ -69,7 +69,7 @@
           <el-col :span="7">
             <p>Название файла решения</p>
             <el-input
-              v-model="form.result_filename"
+              v-model="form.resultFilename"
               type="textarea"
               style="width: 100%"
               placeholder="Название файла решения"
@@ -97,7 +97,7 @@
           <el-col :span="7">
             <p>Попыток сдать</p>
             <el-input-number
-              v-model="form.NumOfAttempts"
+              v-model="form.numOfAttempts"
               @change="handleChange"
               :min="1"
               :max="100"
@@ -136,7 +136,15 @@ export default {
   data() {
     return {
       form: {
-        NumOfAttempts: 1,
+        numOfAttempts: 1,
+        course: "",
+        taskname: "",
+        desc: "",
+        timePostTasks: "",
+        timeDeadline: "",
+        resultFilename: "",
+        technology: "",
+        mode: ""
       },
       fileProcessing: "",
       fileResult: "",
