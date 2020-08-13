@@ -111,7 +111,12 @@
             Файл для обработки
             <span style="color: #f00">*</span>
           </p>
-          <input type="file" id="file" ref="fileProcessing" v-on:change="handleProcessingFileUpload()" />
+          <input
+            type="file"
+            id="file"
+            ref="fileProcessing"
+            v-on:change="handleProcessingFileUpload()"
+          />
         </el-form-item>
         <el-form-item>
           <p>
@@ -144,7 +149,7 @@ export default {
         timeDeadline: "",
         resultFilename: "",
         technology: "",
-        mode: ""
+        mode: "trainer",
       },
       fileProcessing: "",
       fileResult: "",
@@ -152,31 +157,77 @@ export default {
   },
   methods: {
     handleProcessingFileUpload() {
-      this.fileProcessing = this.$refs.fileProcessing.files[0]
+      this.fileProcessing = this.$refs.fileProcessing.files[0];
     },
     handleResultFileUpload() {
-      this.fileResult = this.$refs.fileResult.files[0]
+      this.fileResult = this.$refs.fileResult.files[0];
     },
     handleChange(value) {
       console.log(value);
     },
     onSubmit() {
-      let formData = new FormData();
-      formData.append('files', this.fileProcessing)
-      formData.append('files', this.fileResult)
-      axios
-        .post("http://localhost:5000/file-result", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(function () {
-          console.log("SUCCESS!!");
-        })
-        .catch(function () {
-          console.log("FAILURE!!");
+      if (this.form.course === "") {
+        this.$message({
+          showClose: true,
+          message: "Выберите курс!",
+          type: "warning",
         });
-      this.$message("Грейдер создан!");
+      } else if (this.form.taskname === "") {
+        this.$message({
+          showClose: true,
+          message: "Укажите название задания!",
+          type: "warning",
+        });
+      } else if (this.form.desc === "") {
+        this.$message({
+          showClose: true,
+          message: "Не задано описание задания!",
+          type: "warning",
+        });
+      } else if (this.form.timePostTasks === "") {
+        this.form.timePostTasks = Date();
+      } else if (this.form.timeDeadline === "") {
+        this.$message({
+          showClose: true,
+          message: "Не задан дедлайн!",
+          type: "warning",
+        });
+      } else if (this.form.technology === "") {
+        this.$message({
+          showClose: true,
+          message: "Выберите технологию!",
+          type: "warning",
+        });
+      } else if (this.fileProcessing === "") {
+        this.$message({
+          showClose: true,
+          message: "Выберите файл для обработки!",
+          type: "warning",
+        });
+      } else if (this.fileResult === "") {
+        this.$message({
+          showClose: true,
+          message: "Выберите файл результата!",
+          type: "warning",
+        });
+      } else {
+        let formData = new FormData();
+        formData.append("files", this.fileProcessing);
+        formData.append("files", this.fileResult);
+        axios
+          .post("http://localhost:5000/file-result", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then(function () {
+            console.log("SUCCESS!!");
+          })
+          .catch(function () {
+            console.log("FAILURE!!");
+          });
+        this.$message("Грейдер создан!");
+      }
     },
   },
 };
