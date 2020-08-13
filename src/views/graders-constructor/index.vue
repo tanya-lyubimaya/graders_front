@@ -111,19 +111,17 @@
             Файл для обработки
             <span style="color: #f00">*</span>
           </p>
-          <input
-            type="file"
-            id="file"
-            ref="fileProcessing"
-            v-on:change="handleProcessingFileUpload()"
-          />
+          <label class="file-upload" >
+            <i class="fa fa-cloud-upload"></i> Custom Upload
+          </label>
+          <input type="file" ref="fileProcessing" v-on:change="handleProcessingFileUpload()" />
         </el-form-item>
         <el-form-item>
           <p>
             Файл результата
             <span style="color: #f00">*</span>
           </p>
-          <input type="file" id="file" ref="fileResult" v-on:change="handleResultFileUpload()" />
+          <input type="file" ref="fileResult" v-on:change="handleResultFileUpload()" />
         </el-form-item>
         <el-form-item>
           <el-button class="buttonCreate" type="primary" @click="onSubmit()">Создать</el-button>
@@ -232,3 +230,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+input[type="file"] {
+  display: none;
+}
+.file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+</style>
