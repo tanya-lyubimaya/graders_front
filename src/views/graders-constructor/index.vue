@@ -214,11 +214,11 @@ export default {
           type: "warning",
         });
       } else {
-        let formData = new FormData();
-        formData.append("files", this.fileProcessing);
-        formData.append("files", this.fileResult);
+        let formData = new FormData()
+        formData.append("files", this.fileProcessing)
+        formData.append("files", this.fileResult)
         axios
-          .post("http://localhost:5000/file-result", formData, {
+          .put("http://localhost:5000/file-result", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -230,6 +230,8 @@ export default {
             console.log("FAILURE!!");
           });
         this.$message("Грейдер создан!");
+        let formData2 = new FormData()
+        formData2.append("class_id", "62566470367")
       }
     },
   },
