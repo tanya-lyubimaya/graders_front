@@ -76,3 +76,12 @@ span#star {
     line-height: 2.8em;
 }
 
+label.file-upload {
+    border-radius: 0.2rem;
+    font-size: 0.8rem;
+    background: white;
+    color: #a1a1a1;
+    width: 9rem;
+    text-align: center;
+}
+
