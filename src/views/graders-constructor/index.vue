@@ -17,8 +17,8 @@
             <span style="color: #f00">*</span>
           </p>
           <el-select style="width: 50%" v-model="form.course" placeholder="Название курса">
-            <el-option label="Компьютерная графика 2020" value="1" />
-            <el-option label="Компьютерная графика 2021" value="2" />
+            <el-option label="Компьютерная графика 2020" value="Компьютерная графика 2020" />
+            <el-option label="Компьютерная графика 2021" value="Компьютерная графика 2021" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -69,7 +69,7 @@
           <el-col :span="7">
             <p>Название файла решения</p>
             <el-input
-              v-model="form.resultFilename"
+              v-model="form.solutionFilename"
               type="textarea"
               style="width: 100%"
               placeholder="Название файла решения"
@@ -150,9 +150,10 @@ export default {
         desc: "",
         timePostTasks: "",
         timeDeadline: "",
-        resultFilename: "",
+        solutionFilename: "",
         technology: "",
         mode: "trainer",
+        teacherEmail: "teachername@hse.ru"
       },
       fileProcessing: "",
       fileResult: "",
@@ -231,7 +232,28 @@ export default {
           });
         this.$message("Грейдер создан!");
         let formData2 = new FormData()
-        formData2.append("class_id", "62566470367")
+        formData2.append("class_id", "62566470367") // NOT SURE WHERE TO GET THIS ONE
+        formData2.append("class_name", this.form.course)
+        formData2.append("task_name", this.form.taskname)
+        formData2.append("solution_filename", this.form.solutionFilename)
+        formData2.append("description", this.form.desc)
+        formData2.append("technology", this.form.technology)
+        formData2.append("teacher_email", this.form.teacherEmail)
+        formData2.append("deadline", this.form.timeDeadline)
+        formData2.append("start_time", this.form.timePostTasks)
+        formData2.append("mode", this.form.mode)
+        formData2.append("attempts", this.form.numOfAttempts)
+        axios.post("http://localhost:5000/graders", formData2, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then(function () {
+            console.log("SUCCESS!!");
+          })
+          .catch(function () {
+            console.log("FAILURE!!");
+          });
       }
     },
   },
