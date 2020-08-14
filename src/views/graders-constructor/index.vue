@@ -85,13 +85,16 @@
             <el-select v-model="form.technology" style="width: 90%" placeholder="Технология">
               <el-option label="FFmpeg" value="ffmpeg" />
               <el-option label="ImageMagick" value="imagemagick" />
+              <el-option label="ONVIF" value="onvif" />
+              <el-option label="GStreamer" value="gstreamer" />
+              <el-option label="Python" value="python" />
             </el-select>
           </el-col>
           <el-col :span="7">
             <p>Режим</p>
             <el-select v-model="form.mode" style="width: 90%" placeholder="Режим">
-              <el-option label="Режим 1" value="1" />
-              <el-option label="Режим 2" value="2" />
+              <el-option label="Обычный" value="trainer" />
+              <el-option label="Экзамен" value="exam" />
             </el-select>
           </el-col>
           <el-col :span="7">
