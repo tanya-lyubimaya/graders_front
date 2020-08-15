@@ -116,7 +116,7 @@
           </p>
           <input
             type="file"
-            id="file"
+            id="fileProcessing"
             ref="fileProcessing"
             v-on:change="handleProcessingFileUpload()"
           />
@@ -126,7 +126,7 @@
             Файл результата
             <span style="color: #f00">*</span>
           </p>
-          <input type="file" id="file" ref="fileResult" v-on:change="handleResultFileUpload()" />
+          <input type="file" id="fileResult" ref="fileResult" v-on:change="handleResultFileUpload()" />
         </el-form-item>
         <el-form-item>
           <el-button class="buttonCreate" type="primary" @click="onSubmit()">Создать</el-button>
@@ -153,7 +153,8 @@ export default {
         solutionFilename: "",
         technology: "",
         mode: "trainer",
-        teacherEmail: "teachername@hse.ru"
+        teacherEmail: "teachername@hse.ru", // GET FROM API
+        classID: "62566470367" // GET FROM API
       },
       fileProcessing: "",
       fileResult: "",
@@ -161,10 +162,10 @@ export default {
   },
   methods: {
     handleProcessingFileUpload() {
-      this.fileProcessing = this.$refs.fileProcessing.files[0];
+      this.fileProcessing = this.$refs.fileProcessing.files[0]
     },
     handleResultFileUpload() {
-      this.fileResult = this.$refs.fileResult.files[0];
+      this.fileResult = this.$refs.fileResult.files[0]
     },
     handleChange(value) {
       console.log(value);
@@ -201,7 +202,7 @@ export default {
           showClose: true,
           message: "Выберите технологию!",
           type: "warning",
-        });
+        })
       } else if (this.fileProcessing === "") {
         this.$message({
           showClose: true,
@@ -225,14 +226,23 @@ export default {
             },
           })
           .then(function () {
-            console.log("SUCCESS!!");
+            console.log("SUCCESS!!")
           })
           .catch(function () {
-            console.log("FAILURE!!");
-          });
-        this.$message("Грейдер создан!");
+            console.log("FAILURE!!")
+          })
+        this.$message("Грейдер создан!")
         let formData2 = new FormData()
-        formData2.append("class_id", "62566470367") // NOT SURE WHERE TO GET THIS ONE
+        if (this.form.solutionFilename === "") {
+          if (this.form.technology === "ffmpeg" || this.form.technology === "imagemagick" || this.form.technology === "gstreamer") {
+            this.form.solutionFilename = "solution.sh"
+          }
+          else {
+            this.form.solutionFilename = this.$refs.fileResult.files[0].name
+          }
+        }
+
+        formData2.append("class_id", this.form.classID)
         formData2.append("class_name", this.form.course)
         formData2.append("task_name", this.form.taskname)
         formData2.append("solution_filename", this.form.solutionFilename)
@@ -256,6 +266,6 @@ export default {
           });
       }
     },
-  },
-};
+  }
+}
 </script>
