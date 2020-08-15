@@ -126,7 +126,12 @@
             Файл результата
             <span style="color: #f00">*</span>
           </p>
-          <input type="file" id="fileResult" ref="fileResult" v-on:change="handleResultFileUpload()" />
+          <input
+            type="file"
+            id="fileResult"
+            ref="fileResult"
+            v-on:change="handleResultFileUpload()"
+          />
         </el-form-item>
         <el-form-item>
           <el-button class="buttonCreate" type="primary" @click="onSubmit()">Создать</el-button>
@@ -154,18 +159,19 @@ export default {
         technology: "",
         mode: "trainer",
         teacherEmail: "teachername@hse.ru", // GET FROM API
-        classID: "62566470367" // GET FROM API
+        classID: "62566470367", // GET FROM API
       },
       fileProcessing: "",
       fileResult: "",
+      graderID: "",
     };
   },
   methods: {
     handleProcessingFileUpload() {
-      this.fileProcessing = this.$refs.fileProcessing.files[0]
+      this.fileProcessing = this.$refs.fileProcessing.files[0];
     },
     handleResultFileUpload() {
-      this.fileResult = this.$refs.fileResult.files[0]
+      this.fileResult = this.$refs.fileResult.files[0];
     },
     handleChange(value) {
       console.log(value);
@@ -202,7 +208,7 @@ export default {
           showClose: true,
           message: "Выберите технологию!",
           type: "warning",
-        })
+        });
       } else if (this.fileProcessing === "") {
         this.$message({
           showClose: true,
@@ -216,44 +222,11 @@ export default {
           type: "warning",
         });
       } else {
-        let formData = new FormData()
-        formData.append("files", this.fileProcessing)
-        formData.append("files", this.fileResult)
+        let formData = new FormData();
+        formData.append("files", this.fileProcessing);
+        formData.append("files", this.fileResult);
         axios
           .put("http://localhost:5000/file-result", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then(function () {
-            console.log("SUCCESS!!")
-          })
-          .catch(function () {
-            console.log("FAILURE!!")
-          })
-        this.$message("Грейдер создан!")
-        let formData2 = new FormData()
-        if (this.form.solutionFilename === "") {
-          if (this.form.technology === "ffmpeg" || this.form.technology === "imagemagick" || this.form.technology === "gstreamer") {
-            this.form.solutionFilename = "solution.sh"
-          }
-          else {
-            this.form.solutionFilename = this.$refs.fileResult.files[0].name
-          }
-        }
-
-        formData2.append("class_id", this.form.classID)
-        formData2.append("class_name", this.form.course)
-        formData2.append("task_name", this.form.taskname)
-        formData2.append("solution_filename", this.form.solutionFilename)
-        formData2.append("description", this.form.desc)
-        formData2.append("technology", this.form.technology)
-        formData2.append("teacher_email", this.form.teacherEmail)
-        formData2.append("deadline", this.form.timeDeadline)
-        formData2.append("start_time", this.form.timePostTasks)
-        formData2.append("mode", this.form.mode)
-        formData2.append("attempts", this.form.numOfAttempts)
-        axios.post("http://localhost:5000/graders", formData2, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -264,8 +237,66 @@ export default {
           .catch(function () {
             console.log("FAILURE!!");
           });
+        let formData2 = new FormData();
+        if (this.form.solutionFilename === "") {
+          if (
+            this.form.technology === "ffmpeg" ||
+            this.form.technology === "imagemagick" ||
+            this.form.technology === "gstreamer"
+          ) {
+            this.form.solutionFilename = "solution.sh";
+          } else {
+            this.form.solutionFilename = this.$refs.fileResult.files[0].name;
+          }
+        }
+
+        formData2.append("class_id", this.form.classID);
+        formData2.append("class_name", this.form.course);
+        formData2.append("task_name", this.form.taskname);
+        formData2.append("solution_filename", this.form.solutionFilename);
+        formData2.append("description", this.form.desc);
+        formData2.append("technology", this.form.technology);
+        formData2.append("teacher_email", this.form.teacherEmail);
+        formData2.append("deadline", this.form.timeDeadline);
+        formData2.append("start_time", this.form.timePostTasks);
+        formData2.append("mode", this.form.mode);
+        formData2.append("attempts", this.form.numOfAttempts);
+        axios
+          .post("http://localhost:5000/graders", formData2, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then(function () {
+            console.log("SUCCESS!!");
+          })
+          .catch(function () {
+            console.log("FAILURE!!");
+          });
+        axios.get("http://localhost:5000/graders2").then(
+          (res) => {
+            console.log(res.data);
+            if (res.data.message === "Grader created") {
+              this.graderID = res.data.grader_id;
+              this.$message({
+                showClose: true,
+                message: "Грейдер создан!",
+                type: "success",
+              })
+            } else {
+              this.$message({
+                showClose: true,
+                message: "Ошибка при создании грейдера",
+                type: "error",
+              })
+            }
+          },
+          (error) => {
+            console.error(error);
+          }
+        );
       }
     },
-  }
-}
+  },
+};
 </script>
