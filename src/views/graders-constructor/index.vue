@@ -115,10 +115,10 @@
             <span style="color: #f00">*</span>
           </p>
           <input
-            type="file"
             id="fileProcessing"
             ref="fileProcessing"
-            v-on:change="handleProcessingFileUpload()"
+            type="file"
+            @change="handleProcessingFileUpload()"
           />
         </el-form-item>
         <el-form-item>
@@ -126,12 +126,7 @@
             Файл результата
             <span style="color: #f00">*</span>
           </p>
-          <input
-            type="file"
-            id="fileResult"
-            ref="fileResult"
-            v-on:change="handleResultFileUpload()"
-          />
+          <input id="fileResult" ref="fileResult" type="file" @:change="handleResultFileUpload()" />
         </el-form-item>
         <el-form-item>
           <el-button class="buttonCreate" type="primary" @click="onSubmit()">Создать</el-button>
@@ -143,7 +138,6 @@
 
 <script>
 import axios from "axios";
-import Vue from "vue";
 
 export default {
   data() {
@@ -221,23 +215,21 @@ export default {
           message: "Выберите файл результата!",
           type: "warning",
         });
+        // TODO: Check date input is not in the past
+        /* } else if (this.form.timePostTasks < Date()) {
+        this.$message({
+          showClose: true,
+          message: "Неверное время публикации!",
+          type: "warning"
+        }) */
+      } else if (this.form.timePostTasks > this.form.timeDeadline) {
+        this.$message({
+          showClose: true,
+          message: "Время публикации назначено после дедлайна!",
+          type: "warning",
+        });
       } else {
-        let formData = new FormData();
-        formData.append("files", this.fileProcessing);
-        formData.append("files", this.fileResult);
-        axios
-          .put("http://localhost:5000/file-result", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then(function () {
-            console.log("SUCCESS!!");
-          })
-          .catch(function () {
-            console.log("FAILURE!!");
-          });
-        let formData2 = new FormData();
+        const formData2 = new FormData();
         if (this.form.solutionFilename === "") {
           if (
             this.form.technology === "ffmpeg" ||
@@ -249,7 +241,6 @@ export default {
             this.form.solutionFilename = this.$refs.fileResult.files[0].name;
           }
         }
-
         formData2.append("class_id", this.form.classID);
         formData2.append("class_name", this.form.course);
         formData2.append("task_name", this.form.taskname);
@@ -262,7 +253,7 @@ export default {
         formData2.append("mode", this.form.mode);
         formData2.append("attempts", this.form.numOfAttempts);
         axios
-          .post("http://localhost:5000/graders", formData2, {
+          .post("http://mc.auditory.ru/graders", formData2, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -273,7 +264,7 @@ export default {
           .catch(function () {
             console.log("FAILURE!!");
           });
-        axios.get("http://localhost:5000/graders2").then(
+        axios.get("http://mc.auditory.ru/graders").then(
           (res) => {
             console.log(res.data);
             if (res.data.message === "Grader created") {
@@ -282,13 +273,34 @@ export default {
                 showClose: true,
                 message: "Грейдер создан!",
                 type: "success",
-              })
+              });
+              console.log(Date());
+              console.log(this.form.timePostTasks);
+              const formData = new FormData();
+              formData.append("files", this.fileProcessing);
+              formData.append("files", this.fileResult);
+              axios
+                .put(
+                  `http://mc.auditory.ru/graders/${this.graderID}/files`,
+                  formData,
+                  {
+                    headers: {
+                      "Content-Type": "multipart/form-data",
+                    },
+                  }
+                )
+                .then(function () {
+                  console.log("SUCCESS!!");
+                })
+                .catch(function () {
+                  console.log("FAILURE!!");
+                });
             } else {
               this.$message({
                 showClose: true,
                 message: "Ошибка при создании грейдера",
                 type: "error",
-              })
+              });
             }
           },
           (error) => {
