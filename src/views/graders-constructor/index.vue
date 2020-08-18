@@ -126,7 +126,7 @@
             Файл результата
             <span style="color: #f00">*</span>
           </p>
-          <input id="fileResult" ref="fileResult" type="file" @:change="handleResultFileUpload()" />
+          <input id="fileResult" ref="fileResult" type="file" @change="handleResultFileUpload()" />
         </el-form-item>
         <el-form-item>
           <el-button class="buttonCreate" type="primary" @click="onSubmit()">Создать</el-button>
@@ -163,9 +163,11 @@ export default {
   methods: {
     handleProcessingFileUpload() {
       this.fileProcessing = this.$refs.fileProcessing.files[0];
+      console.log(this.fileProcessing)
     },
     handleResultFileUpload() {
       this.fileResult = this.$refs.fileResult.files[0];
+      console.log(this.fileResult)
     },
     handleChange(value) {
       console.log(value);
