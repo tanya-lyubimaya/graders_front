@@ -163,16 +163,16 @@ export default {
   methods: {
     handleProcessingFileUpload() {
       this.fileProcessing = this.$refs.fileProcessing.files[0];
-      console.log(this.fileProcessing)
     },
     handleResultFileUpload() {
       this.fileResult = this.$refs.fileResult.files[0];
-      console.log(this.fileResult)
     },
     handleChange(value) {
       console.log(value);
     },
     onSubmit() {
+      var datePost = new Date(this.form.timePostTasks)
+      var dateDeadline = new Date(this.form.timeDeadline)
       if (this.form.course === "") {
         this.$message({
           showClose: true,
@@ -217,13 +217,12 @@ export default {
           message: "Выберите файл результата!",
           type: "warning",
         });
-        // TODO: Check date input is not in the past
-        /* } else if (this.form.timePostTasks < Date()) {
+      } else if (datePost <= new Date()) {
         this.$message({
           showClose: true,
           message: "Неверное время публикации!",
           type: "warning"
-        }) */
+        })
       } else if (this.form.timePostTasks > this.form.timeDeadline) {
         this.$message({
           showClose: true,
@@ -268,7 +267,6 @@ export default {
           });
         axios.get("http://mc.auditory.ru/graders").then(
           (res) => {
-            console.log(res.data);
             if (res.data.message === "Grader created") {
               this.graderID = res.data.grader_id;
               this.$message({
@@ -276,8 +274,6 @@ export default {
                 message: "Грейдер создан!",
                 type: "success",
               });
-              console.log(Date());
-              console.log(this.form.timePostTasks);
               const formData = new FormData();
               formData.append("files", this.fileProcessing);
               formData.append("files", this.fileResult);
