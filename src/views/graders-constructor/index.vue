@@ -230,7 +230,7 @@ export default {
           type: "warning",
         });
       } else {
-        const formData2 = new FormData();
+        //const formData2 = new FormData();
         if (this.form.solutionFilename === "") {
           if (
             this.form.technology === "ffmpeg" ||
@@ -242,22 +242,19 @@ export default {
             this.form.solutionFilename = this.$refs.fileResult.files[0].name;
           }
         }
-        formData2.append("class_id", this.form.classID);
-        formData2.append("class_name", this.form.course);
-        formData2.append("task_name", this.form.taskname);
-        formData2.append("solution_filename", this.form.solutionFilename);
-        formData2.append("description", this.form.desc);
-        formData2.append("technology", this.form.technology);
-        formData2.append("teacher_email", this.form.teacherEmail);
-        formData2.append("deadline", this.form.timeDeadline);
-        formData2.append("start_time", this.form.timePostTasks);
-        formData2.append("mode", this.form.mode);
-        formData2.append("attempts", this.form.numOfAttempts);
         axios
-          .post("http://mc.auditory.ru/graders", formData2, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
+            .post("http://localhost:5000/graders", {
+            "class_id": this.form.classID,
+            "class_name": this.form.course,
+            "task_name": this.form.taskname,
+            "solution_filename": this.form.solutionFilename,
+            "description": this.form.desc,
+            "technology": this.form.technology,
+            "teacher_email": this.form.teacherEmail,
+            "deadline": this.form.timeDeadline,
+            "start_time": this.form.timePostTasks,
+            "mode": this.form.mode,
+            "attempts": this.form.numOfAttempts
           })
           .then(function () {
             console.log("SUCCESS!!");
@@ -265,7 +262,7 @@ export default {
           .catch(function () {
             console.log("FAILURE!!");
           });
-        axios.get("http://mc.auditory.ru/graders").then(
+        axios.get("http://localhost:5000/graders2").then(
           (res) => {
             if (res.data.message === "Grader created") {
               this.graderID = res.data.grader_id;
