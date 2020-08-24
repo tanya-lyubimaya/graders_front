@@ -171,8 +171,8 @@ export default {
       console.log(value);
     },
     onSubmit() {
-      var datePost = new Date(this.form.timePostTasks)
-      var dateDeadline = new Date(this.form.timeDeadline)
+      var datePost = new Date(this.form.timePostTasks);
+      var dateDeadline = new Date(this.form.timeDeadline);
       if (this.form.course === "") {
         this.$message({
           showClose: true,
@@ -221,8 +221,8 @@ export default {
         this.$message({
           showClose: true,
           message: "Неверное время публикации!",
-          type: "warning"
-        })
+          type: "warning",
+        });
       } else if (this.form.timePostTasks > this.form.timeDeadline) {
         this.$message({
           showClose: true,
@@ -230,7 +230,6 @@ export default {
           type: "warning",
         });
       } else {
-        //const formData2 = new FormData();
         if (this.form.solutionFilename === "") {
           if (
             this.form.technology === "ffmpeg" ||
@@ -243,65 +242,64 @@ export default {
           }
         }
         axios
-            .post("http://localhost:5000/graders", {
-            "class_id": this.form.classID,
-            "class_name": this.form.course,
-            "task_name": this.form.taskname,
-            "solution_filename": this.form.solutionFilename,
-            "description": this.form.desc,
-            "technology": this.form.technology,
-            "teacher_email": this.form.teacherEmail,
-            "deadline": this.form.timeDeadline,
-            "start_time": this.form.timePostTasks,
-            "mode": this.form.mode,
-            "attempts": this.form.numOfAttempts
+          .post("http://mc.auditory.ru/graders", {
+            class_id: this.form.classID,
+            class_name: this.form.course,
+            task_name: this.form.taskname,
+            solution_filename: this.form.solutionFilename,
+            description: this.form.desc,
+            technology: this.form.technology,
+            teacher_email: this.form.teacherEmail,
+            deadline: this.form.timeDeadline,
+            start_time: this.form.timePostTasks,
+            mode: this.form.mode,
+            attempts: this.form.numOfAttempts,
           })
-          .then(function () {
-            console.log("SUCCESS!!");
+          .then((res) => {
+            axios.get("http://mc.auditory.ru/graders").then(
+              (res) => {
+                if (res.data.message === "Grader created") {
+                  this.graderID = res.data.grader_id;
+                  this.$message({
+                    showClose: true,
+                    message: "Грейдер создан!",
+                    type: "success",
+                  });
+                  const formData = new FormData();
+                  formData.append("files", this.fileProcessing);
+                  formData.append("files", this.fileResult);
+                  axios
+                    .put(
+                      `http://mc.auditory.ru/graders/${this.graderID}/files`,
+                      formData,
+                      {
+                        headers: {
+                          "Content-Type": "multipart/form-data",
+                        },
+                      }
+                    )
+                    .then(function () {
+                      console.log("SUCCESS!!");
+                    })
+                    .catch(function () {
+                      console.log("FAILURE!!");
+                    });
+                } else {
+                  this.$message({
+                    showClose: true,
+                    message: "Ошибка при создании грейдера",
+                    type: "error",
+                  });
+                }
+              },
+              (error) => {
+                console.error(error);
+              }
+            );
           })
           .catch(function () {
             console.log("FAILURE!!");
           });
-        axios.get("http://localhost:5000/graders2").then(
-          (res) => {
-            if (res.data.message === "Grader created") {
-              this.graderID = res.data.grader_id;
-              this.$message({
-                showClose: true,
-                message: "Грейдер создан!",
-                type: "success",
-              });
-              const formData = new FormData();
-              formData.append("files", this.fileProcessing);
-              formData.append("files", this.fileResult);
-              axios
-                .put(
-                  `http://mc.auditory.ru/graders/${this.graderID}/files`,
-                  formData,
-                  {
-                    headers: {
-                      "Content-Type": "multipart/form-data",
-                    },
-                  }
-                )
-                .then(function () {
-                  console.log("SUCCESS!!");
-                })
-                .catch(function () {
-                  console.log("FAILURE!!");
-                });
-            } else {
-              this.$message({
-                showClose: true,
-                message: "Ошибка при создании грейдера",
-                type: "error",
-              });
-            }
-          },
-          (error) => {
-            console.error(error);
-          }
-        );
       }
     },
   },
