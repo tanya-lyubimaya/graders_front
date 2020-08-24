@@ -217,7 +217,7 @@ export default {
           message: "Выберите файл результата!",
           type: "warning",
         });
-      } else if (datePost <= new Date()) {
+      } else if (datePost < new Date()) {
         this.$message({
           showClose: true,
           message: "Неверное время публикации!",
