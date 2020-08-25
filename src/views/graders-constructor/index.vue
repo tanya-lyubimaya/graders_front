@@ -173,6 +173,7 @@ export default {
     onSubmit() {
       var datePost = new Date(this.form.timePostTasks);
       var dateDeadline = new Date(this.form.timeDeadline);
+      var currentDate = new Date()
       if (this.form.course === "") {
         this.$message({
           showClose: true,
@@ -219,7 +220,8 @@ export default {
           message: "Выберите файл результата!",
           type: "warning",
         });
-      } else if (datePost < new Date()) {
+      }
+      else if (datePost < new Date(currentDate.getTime() + (2 * 60 * 1000))) {
         this.$message({
           showClose: true,
           message: "Неверное время публикации!",
