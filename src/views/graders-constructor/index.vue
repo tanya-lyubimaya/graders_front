@@ -194,7 +194,7 @@ export default {
         });
       } else if (this.form.timePostTasks === "") {
         var twoMinutesLater = new Date();
-        twoMinutesLater.setMinutes(twoMinutesLater.getMinutes() + 2);
+        twoMinutesLater.setMinutes(twoMinutesLater.getMinutes() + 3);
         this.form.timePostTasks = twoMinutesLater;
       } else if (this.form.timeDeadline === "") {
         this.$message({
