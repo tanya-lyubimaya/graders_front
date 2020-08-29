@@ -258,7 +258,11 @@ export default {
             start_time: this.form.timePostTasks,
             mode: this.form.mode,
             attempts: this.form.numOfAttempts,
-          })
+          },
+          {
+            headers: {
+            "X-API-KEY":"7729975492c74225878bd0f54be97b6b"
+          }})
           .then(
             (res) => {
               if (res.data.message === "Grader created") {
@@ -278,6 +282,7 @@ export default {
                     {
                       headers: {
                         "Content-Type": "multipart/form-data",
+                        "X-API-KEY":"7729975492c74225878bd0f54be97b6b"
                       },
                     }
                   )
