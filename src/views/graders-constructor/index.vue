@@ -138,6 +138,7 @@
 
 <script>
 import axios from "axios";
+import { withConverter } from 'js-cookie';
 
 export default {
   data() {
@@ -261,7 +262,8 @@ export default {
           },
           {
             headers: {
-            "X-API-KEY":"7729975492c74225878bd0f54be97b6b"
+            "X-API-KEY":"7729975492c74225878bd0f54be97b6b",
+            withCredentials: true
           }})
           .then(
             (res) => {
@@ -284,6 +286,7 @@ export default {
                         "Content-Type": "multipart/form-data",
                         "X-API-KEY":"7729975492c74225878bd0f54be97b6b"
                       },
+                      withCredentials: true
                     }
                   )
                   .then(function () {
