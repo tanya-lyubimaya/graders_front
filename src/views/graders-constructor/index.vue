@@ -67,13 +67,15 @@
             />
           </el-col>
           <el-col :span="7">
-            <p>Название файла решения</p>
-            <el-input
-              v-model="form.solutionFilename"
-              type="textarea"
-              style="width: 100%"
-              placeholder="Название файла решения"
-            />
+            <p>Попыток сдать</p>
+            <el-input-number
+              v-model="form.numOfAttempts"
+              @change="handleChange"
+              :min="1"
+              :max="100"
+              size="medium"
+              style="width: 80%"
+            ></el-input-number>
           </el-col>
         </el-form-item>
         <el-form-item>
@@ -82,7 +84,7 @@
               Технология
               <span style="color: #f00">*</span>
             </p>
-            <el-select v-model="form.technology" style="width: 90%" placeholder="Технология">
+            <el-select v-model="form.technology" style="width: 90%" placeholder="Технология" @change="handleTechnologyChange">
               <el-option label="FFmpeg" value="ffmpeg" />
               <el-option label="ImageMagick" value="imagemagick" />
               <el-option label="ONVIF" value="onvif" />
@@ -98,20 +100,18 @@
             </el-select>
           </el-col>
           <el-col :span="7">
-            <p>Попыток сдать</p>
-            <el-input-number
-              v-model="form.numOfAttempts"
-              @change="handleChange"
-              :min="1"
-              :max="100"
-              size="medium"
-              style="width: 80%"
-            ></el-input-number>
+            <p>Название файла решения</p>
+            <el-input
+              v-model="form.solutionFilename"
+              type="textarea"
+              style="width: 100%"
+              placeholder="Название файла решения"
+            />
           </el-col>
         </el-form-item>
         <el-form-item>
           <p>
-            Файл для обработки
+            Входные данные
             <span style="color: #f00">*</span>
           </p>
           <input
@@ -138,7 +138,7 @@
 
 <script>
 import axios from "axios";
-import { withConverter } from 'js-cookie';
+import { withConverter } from "js-cookie";
 
 export default {
   data() {
@@ -162,6 +162,20 @@ export default {
     };
   },
   methods: {
+    handleTechnologyChange() {
+      if (
+            this.form.technology === "ffmpeg" ||
+            this.form.technology === "imagemagick" ||
+            this.form.technology === "gstreamer"
+          ) {
+            this.form.solutionFilename = "solution.sh";
+          } else if (
+            this.form.technology === "onvif" ||
+            this.form.technology === "python"
+          ) {
+            this.form.solutionFilename = "solution.py";
+          }
+    },
     handleProcessingFileUpload() {
       this.fileProcessing = this.$refs.fileProcessing.files[0];
     },
@@ -174,7 +188,7 @@ export default {
     onSubmit() {
       var datePost = new Date(this.form.timePostTasks);
       var dateDeadline = new Date(this.form.timeDeadline);
-      var currentDate = new Date()
+      var currentDate = new Date();
       if (this.form.course === "") {
         this.$message({
           showClose: true,
@@ -221,8 +235,7 @@ export default {
           message: "Выберите файл результата!",
           type: "warning",
         });
-      }
-      else if (datePost < new Date(currentDate.getTime() + (2 * 60 * 1000))) {
+      } else if (datePost < new Date(currentDate.getTime() + 2 * 60 * 1000)) {
         this.$message({
           showClose: true,
           message: "Неверное время публикации!",
@@ -235,36 +248,32 @@ export default {
           type: "warning",
         });
       } else {
-        if (this.form.solutionFilename === "") {
-          if (
-            this.form.technology === "ffmpeg" ||
-            this.form.technology === "imagemagick" ||
-            this.form.technology === "gstreamer"
-          ) {
-            this.form.solutionFilename = "solution.sh";
-          } else {
-            this.form.solutionFilename = this.$refs.fileResult.files[0].name;
-          }
+        if (this.form.solutionFilename != "solution.py" && this.form.solutionFilename != "solution.sh") {
+          this.form.solutionFilename = this.$refs.fileResult.files[0].name;
         }
         axios
-          .post("http://mc.auditory.ru/graders", {
-            class_id: this.form.classID,
-            class_name: this.form.course,
-            task_name: this.form.taskname,
-            solution_filename: this.form.solutionFilename,
-            description: this.form.desc,
-            technology: this.form.technology,
-            teacher_email: this.form.teacherEmail,
-            deadline: this.form.timeDeadline,
-            start_time: this.form.timePostTasks,
-            mode: this.form.mode,
-            attempts: this.form.numOfAttempts,
-          },
-          {
-            headers: {
-            "X-API-KEY":"7729975492c74225878bd0f54be97b6b",
-            withCredentials: true
-          }})
+          .post(
+            "http://mc.auditory.ru/graders",
+            {
+              class_id: this.form.classID,
+              class_name: this.form.course,
+              task_name: this.form.taskname,
+              solution_filename: this.form.solutionFilename,
+              description: this.form.desc,
+              technology: this.form.technology,
+              teacher_email: this.form.teacherEmail,
+              deadline: this.form.timeDeadline,
+              start_time: this.form.timePostTasks,
+              mode: this.form.mode,
+              attempts: this.form.numOfAttempts,
+            },
+            {
+              headers: {
+                "X-API-KEY": "7729975492c74225878bd0f54be97b6b",
+                withCredentials: true,
+              },
+            }
+          )
           .then(
             (res) => {
               if (res.data.message === "Grader created") {
@@ -284,9 +293,9 @@ export default {
                     {
                       headers: {
                         "Content-Type": "multipart/form-data",
-                        "X-API-KEY":"7729975492c74225878bd0f54be97b6b"
+                        "X-API-KEY": "7729975492c74225878bd0f54be97b6b",
                       },
-                      withCredentials: true
+                      withCredentials: true,
                     }
                   )
                   .then(function () {
