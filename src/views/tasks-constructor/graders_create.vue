@@ -12,6 +12,9 @@
       <el-form ref="form" :model="form" label-width="120px">
         <el-form-item>
           <h3 class="title">Заполните данные для создания грейдера</h3>
+        </el-form-item>
+        <!--
+        <el-form-item>
           <p>
             Выберите курс в Classroom
             <span style="color: #f00">*</span>
@@ -21,9 +24,10 @@
             <el-option label="Компьютерная графика 2021" value="Компьютерная графика 2021" />
           </el-select>
         </el-form-item>
+        -->
         <el-form-item>
           <p>
-            Укажите название задания
+            Название задания
             <span style="color: #f00">*</span>
           </p>
           <el-input
@@ -44,6 +48,7 @@
             placeholder="Пожалуйста, введите описание задания"
           />
         </el-form-item>
+        <!--
         <el-form-item>
           <el-col :span="7">
             <p>Дата и время выдачи заданий</p>
@@ -78,13 +83,19 @@
             ></el-input-number>
           </el-col>
         </el-form-item>
+        -->
         <el-form-item>
           <el-col :span="7">
             <p>
               Технология
               <span style="color: #f00">*</span>
             </p>
-            <el-select v-model="form.technology" style="width: 90%" placeholder="Технология" @change="handleTechnologyChange">
+            <el-select
+              v-model="form.technology"
+              style="width: 90%"
+              placeholder="Технология"
+              @change="handleTechnologyChange"
+            >
               <el-option label="FFmpeg" value="ffmpeg" />
               <el-option label="ImageMagick" value="imagemagick" />
               <el-option label="ONVIF" value="onvif" />
@@ -95,7 +106,8 @@
           <el-col :span="7">
             <p>Режим</p>
             <el-select v-model="form.mode" style="width: 90%" placeholder="Режим">
-              <el-option label="Обычный" value="trainer" />
+              <el-option label="Тренажёр" value="trainer" />
+              <el-option label="Обычный" value="regular" />
               <el-option label="Экзамен" value="exam" />
             </el-select>
           </el-col>
@@ -164,17 +176,17 @@ export default {
   methods: {
     handleTechnologyChange() {
       if (
-            this.form.technology === "ffmpeg" ||
-            this.form.technology === "imagemagick" ||
-            this.form.technology === "gstreamer"
-          ) {
-            this.form.solutionFilename = "solution.sh";
-          } else if (
-            this.form.technology === "onvif" ||
-            this.form.technology === "python"
-          ) {
-            this.form.solutionFilename = "solution.py";
-          }
+        this.form.technology === "ffmpeg" ||
+        this.form.technology === "imagemagick" ||
+        this.form.technology === "gstreamer"
+      ) {
+        this.form.solutionFilename = "solution.sh";
+      } else if (
+        this.form.technology === "onvif" ||
+        this.form.technology === "python"
+      ) {
+        this.form.solutionFilename = "solution.py";
+      }
     },
     handleProcessingFileUpload() {
       this.fileProcessing = this.$refs.fileProcessing.files[0];
@@ -248,7 +260,10 @@ export default {
           type: "warning",
         });
       } else {
-        if (this.form.solutionFilename != "solution.py" && this.form.solutionFilename != "solution.sh") {
+        if (
+          this.form.solutionFilename != "solution.py" &&
+          this.form.solutionFilename != "solution.sh"
+        ) {
           this.form.solutionFilename = this.$refs.fileResult.files[0].name;
         }
         axios

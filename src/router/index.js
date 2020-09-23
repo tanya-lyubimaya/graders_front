@@ -76,7 +76,7 @@ export const constantRoutes = [
       {
         path: 'graders-constructor',
         name: 'Graders Constructor',
-        component: () => import('@/views/tasks-constructor/graders'),
+        component: () => import('@/views/tasks-constructor/graders_create'),
         meta: { title: 'Конструктор грейдеров' },
         hidden: true
       }
