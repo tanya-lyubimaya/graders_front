@@ -13,18 +13,6 @@
         <el-form-item>
           <h3 class="title">Заполните данные для создания грейдера</h3>
         </el-form-item>
-        <!--
-        <el-form-item>
-          <p>
-            Выберите курс в Classroom
-            <span style="color: #f00">*</span>
-          </p>
-          <el-select style="width: 50%" v-model="form.course" placeholder="Название курса">
-            <el-option label="Компьютерная графика 2020" value="Компьютерная графика 2020" />
-            <el-option label="Компьютерная графика 2021" value="Компьютерная графика 2021" />
-          </el-select>
-        </el-form-item>
-        -->
         <el-form-item>
           <p>
             Название задания
@@ -48,42 +36,6 @@
             placeholder="Пожалуйста, введите описание задания"
           />
         </el-form-item>
-        <!--
-        <el-form-item>
-          <el-col :span="7">
-            <p>Дата и время выдачи заданий</p>
-            <el-date-picker
-              v-model="form.timePostTasks"
-              type="datetime"
-              style="width: 90%"
-              placeholder="Выберите дату и время"
-            />
-          </el-col>
-          <el-col :span="7">
-            <p>
-              Дата и время дедлайна
-              <span style="color: #f00">*</span>
-            </p>
-            <el-date-picker
-              v-model="form.timeDeadline"
-              type="datetime"
-              style="width: 90%"
-              placeholder="Выберите дату и время"
-            />
-          </el-col>
-          <el-col :span="7">
-            <p>Попыток сдать</p>
-            <el-input-number
-              v-model="form.numOfAttempts"
-              @change="handleChange"
-              :min="1"
-              :max="100"
-              size="medium"
-              style="width: 80%"
-            ></el-input-number>
-          </el-col>
-        </el-form-item>
-        -->
         <el-form-item>
           <el-col :span="7">
             <p>
@@ -201,13 +153,7 @@ export default {
       var datePost = new Date(this.form.timePostTasks);
       var dateDeadline = new Date(this.form.timeDeadline);
       var currentDate = new Date();
-      /*if (this.form.course === "") {
-        this.$message({
-          showClose: true,
-          message: "Выберите курс!",
-          type: "warning",
-        });
-      } else */ if (
+      if (
         this.form.taskname === ""
       ) {
         this.$message({
@@ -221,17 +167,7 @@ export default {
           message: "Не задано описание задания!",
           type: "warning",
         });
-      } else if (this.form.timePostTasks === "") {
-        var twoMinutesLater = new Date();
-        twoMinutesLater.setMinutes(twoMinutesLater.getMinutes() + 3);
-        this.form.timePostTasks = twoMinutesLater;
-      } /* else if (this.form.timeDeadline === "") {
-        this.$message({
-          showClose: true,
-          message: "Не задан дедлайн!",
-          type: "warning",
-        });
-      } */ else if (
+      } else if (
         this.form.technology === ""
       ) {
         this.$message({
@@ -251,19 +187,7 @@ export default {
           message: "Выберите файл результата!",
           type: "warning",
         });
-      } /* else if (datePost < new Date(currentDate.getTime() + 2 * 60 * 1000)) {
-        this.$message({
-          showClose: true,
-          message: "Неверное время публикации!",
-          type: "warning",
-        });
-      } else if (this.form.timePostTasks > this.form.timeDeadline) {
-        this.$message({
-          showClose: true,
-          message: "Время публикации назначено после дедлайна!",
-          type: "warning",
-        });
-      } */ else {
+      } else {
         if (
           this.form.solutionFilename != "solution.py" &&
           this.form.solutionFilename != "solution.sh"
@@ -339,7 +263,6 @@ export default {
             console.log("FAILURE!!");
           });
       }
-      this.$router.push({ name: "Publish Grader" });
     },
   },
 };

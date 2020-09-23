@@ -12,7 +12,8 @@
       </section>
     </div>
     <el-button class="buttonCreateGrader" type="primary" @click="handleClickCreateGrader()">Создать грейдер</el-button>
-    <el-button class="buttonCreateGrader" type="primary" @click="handleClickCreateCMM()">Создать КИМ</el-button>
+    <el-button class="buttonCreateCMM" type="primary" @click="handleClickCreateCMM()">Создать КИМ</el-button>
+    <el-button class="buttonPublishGrader" type="primary" @click="handleClickPublishGrader()">Опубликовать грейдер</el-button>
     <el-table v-if="cmms.length > 0" ref="singleTable" :data="cmms" style="margin: 7%" @cell-click="handle">
       <el-table-column
         prop="spreadsheetName"
@@ -96,6 +97,9 @@ export default {
     },
     handleClickCreateCMM() {
         this.$router.push({ name: 'CMMs Constructor' })
+    },
+    handleClickPublishGrader() {
+      this.$router.push({ name: "Publish Grader" })
     },
     onSubmit() {
       // this.$message('submit!')
