@@ -156,12 +156,12 @@ export default {
   data() {
     return {
       form: {
-        numOfAttempts: 1,
-        course: "",
+        //numOfAttempts: 1,
+        //course: "",
         taskname: "",
         desc: "",
-        timePostTasks: "",
-        timeDeadline: "",
+        //timePostTasks: "",
+        //timeDeadline: "",
         solutionFilename: "",
         technology: "",
         mode: "trainer",
@@ -201,13 +201,15 @@ export default {
       var datePost = new Date(this.form.timePostTasks);
       var dateDeadline = new Date(this.form.timeDeadline);
       var currentDate = new Date();
-      if (this.form.course === "") {
+      /*if (this.form.course === "") {
         this.$message({
           showClose: true,
           message: "Выберите курс!",
           type: "warning",
         });
-      } else if (this.form.taskname === "") {
+      } else */ if (
+        this.form.taskname === ""
+      ) {
         this.$message({
           showClose: true,
           message: "Укажите название задания!",
@@ -223,13 +225,15 @@ export default {
         var twoMinutesLater = new Date();
         twoMinutesLater.setMinutes(twoMinutesLater.getMinutes() + 3);
         this.form.timePostTasks = twoMinutesLater;
-      } else if (this.form.timeDeadline === "") {
+      } /* else if (this.form.timeDeadline === "") {
         this.$message({
           showClose: true,
           message: "Не задан дедлайн!",
           type: "warning",
         });
-      } else if (this.form.technology === "") {
+      } */ else if (
+        this.form.technology === ""
+      ) {
         this.$message({
           showClose: true,
           message: "Выберите технологию!",
@@ -247,7 +251,7 @@ export default {
           message: "Выберите файл результата!",
           type: "warning",
         });
-      } else if (datePost < new Date(currentDate.getTime() + 2 * 60 * 1000)) {
+      } /* else if (datePost < new Date(currentDate.getTime() + 2 * 60 * 1000)) {
         this.$message({
           showClose: true,
           message: "Неверное время публикации!",
@@ -259,7 +263,7 @@ export default {
           message: "Время публикации назначено после дедлайна!",
           type: "warning",
         });
-      } else {
+      } */ else {
         if (
           this.form.solutionFilename != "solution.py" &&
           this.form.solutionFilename != "solution.sh"
@@ -270,17 +274,17 @@ export default {
           .post(
             "http://mc.auditory.ru/graders",
             {
-              class_id: this.form.classID,
-              class_name: this.form.course,
+              //class_id: this.form.classID,
+              //class_name: this.form.course,
               task_name: this.form.taskname,
               solution_filename: this.form.solutionFilename,
               description: this.form.desc,
               technology: this.form.technology,
               teacher_email: this.form.teacherEmail,
-              deadline: this.form.timeDeadline,
-              start_time: this.form.timePostTasks,
+              //deadline: this.form.timeDeadline,
+              //start_time: this.form.timePostTasks,
               mode: this.form.mode,
-              attempts: this.form.numOfAttempts,
+              //attempts: this.form.numOfAttempts,
             },
             {
               headers: {
@@ -335,6 +339,7 @@ export default {
             console.log("FAILURE!!");
           });
       }
+      this.$router.push({ name: "Publish Grader" });
     },
   },
 };

@@ -78,7 +78,16 @@ export const constantRoutes = [
         name: 'Graders Constructor',
         component: () => import('@/views/tasks-constructor/graders_create'),
         meta: { title: 'Конструктор грейдеров' },
-        hidden: true
+        hidden: true,
+        children: [
+          {
+            path: 'publish-grader',
+            name: 'Publish Grader',
+            component: () => import('@/views/tasks-constructor/grader_publish'),
+            meta: { title: 'Конструктор грейдеров' },
+            hidden: true
+          }
+        ]
       }
     ]
   },
