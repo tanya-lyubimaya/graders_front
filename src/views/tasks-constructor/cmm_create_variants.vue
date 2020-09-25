@@ -7,14 +7,10 @@
           href="/enter"
           title="База КИМов - Сервис для преподавателей МИЭМ НИУ ВШЭ"
         >
-          <h1 class="title">База заданий</h1>
+          <h1 class="title">База КИМов</h1>
         </a>
       </section>
     </div>
-    <el-button class="buttonCreateGrader" type="primary" @click="handleClickCreateGrader()">Создать грейдер</el-button>
-    <el-button class="buttonPublishGrader" type="primary" @click="handleClickPublishGrader()">Опубликовать грейдер</el-button>
-    <el-button class="buttonCreateVariants" type="primary" @click="handleClickCreateVariants()">Создать варианты для КИМа</el-button>
-    <el-button class="buttonGiveOutVariants" type="primary" @click="handleClickGiveOutVariants()">Раздать варианты для КИМа</el-button>
     <el-table v-if="cmms.length > 0" ref="singleTable" :data="cmms" style="margin: 7%" @cell-click="handle">
       <el-table-column
         prop="spreadsheetName"
@@ -90,21 +86,9 @@ export default {
     }
   },
   created() {
-    this.getCourses();
+    this.getCmms();
   },
   methods: {
-    handleClickCreateGrader() {
-        this.$router.push({ name: 'Graders Constructor' })
-    },
-    handleClickPublishGrader() {
-      this.$router.push({ name: "Publish Grader" })
-    },
-    handleClickCreateVariants() {
-      this.$router.push({ name: "Create Variants" })
-    },
-    handleClickGiveOutVariants() {
-      this.$router.push({ name: "Give Out Variants" })
-    },
     onSubmit() {
       // this.$message('submit!')
       // const spreadsheetInfo = JSON.parse(this.dataset.spreadsheetInfo);
@@ -139,19 +123,6 @@ export default {
           console.error(error)
         },
       )
-    },
-    getCourses() {
-      console.log('started method getCourses()')
-      const path = 'http://localhost:8080/courses'
-      axios.get(path).then(
-        res => {
-          this.courses = res.data
-        },
-        error => {
-          console.error(error)
-        },
-      )
-      console.log(this.courses)
     },
     handle(row) {
       this.chosen = true;

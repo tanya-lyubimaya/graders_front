@@ -108,17 +108,12 @@ export default {
   data() {
     return {
       form: {
-        //numOfAttempts: 1,
-        //course: "",
         taskname: "",
         desc: "",
-        //timePostTasks: "",
-        //timeDeadline: "",
         solutionFilename: "",
         technology: "",
         mode: "trainer",
         teacherEmail: "teachername@hse.ru", // GET FROM API
-        classID: "62566470367", // GET FROM API
       },
       fileProcessing: "",
       fileResult: "",
@@ -196,19 +191,14 @@ export default {
         }
         axios
           .post(
-            "http://mc.auditory.ru/graders",
+            `http://localhost:8080/graders/grader_created`,
             {
-              //class_id: this.form.classID,
-              //class_name: this.form.course,
               task_name: this.form.taskname,
               solution_filename: this.form.solutionFilename,
               description: this.form.desc,
               technology: this.form.technology,
               teacher_email: this.form.teacherEmail,
-              //deadline: this.form.timeDeadline,
-              //start_time: this.form.timePostTasks,
               mode: this.form.mode,
-              //attempts: this.form.numOfAttempts,
             },
             {
               headers: {
@@ -231,7 +221,7 @@ export default {
                 formData.append("files", this.fileResult);
                 axios
                   .put(
-                    `http://mc.auditory.ru/graders/${this.graderID}/files`,
+                    `http://localhost:8080/graders/${this.graderID}/files`,
                     formData,
                     {
                       headers: {

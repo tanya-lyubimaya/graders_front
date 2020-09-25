@@ -86,7 +86,21 @@ export const constantRoutes = [
         component: () => import('@/views/tasks-constructor/grader_publish'),
         meta: { title: 'Публикация грейдера' },
         hidden: true
-      }
+      },
+      {
+        path: 'create-variants',
+        name: 'Create Variants',
+        component: () => import('@/views/tasks-constructor/cmm_create_variants'),
+        meta: { title: 'Создать варианты' },
+        hidden: true
+      },
+      {
+        path: 'give-out-variants',
+        name: 'Give Out Variants',
+        component: () => import('@/views/tasks-constructor/cmm_give_out_variants'),
+        meta: { title: 'Раздать варианты' },
+        hidden: true
+      },
     ]
   },
 
