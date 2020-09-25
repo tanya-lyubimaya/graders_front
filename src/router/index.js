@@ -71,12 +71,12 @@ export const constantRoutes = [
         path: 'tasks-constructor',
         name: 'Tasks Constructor',
         component: () => import('@/views/tasks-constructor/index'),
-        meta: { title: 'Попыточная' }
+        meta: { title: 'Конструктор заданий' }
       },
       {
         path: 'graders-constructor',
         name: 'Graders Constructor',
-        component: () => import('@/views/tasks-constructor/graders_create'),
+        component: () => import('@/views/tasks-constructor/grader_create'),
         meta: { title: 'Конструктор грейдеров' },
         hidden: true
       },
