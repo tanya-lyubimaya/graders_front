@@ -86,7 +86,7 @@ export default {
     }
   },
   created() {
-    this.getCmms();
+    //this.getCmms();
   },
   methods: {
     onSubmit() {
@@ -112,7 +112,7 @@ export default {
         type: 'warning'
       })
     },
-    getCmms() {
+    /*getCmms() {
       console.log('started method getCmms()')
       const path = 'http://localhost:5000/get_cmms'
       axios.get(path).then(
@@ -123,7 +123,7 @@ export default {
           console.error(error)
         },
       )
-    },
+    },*/
     handle(row) {
       this.chosen = true;
       this.currentCmm = this.cmms[this.cmms.indexOf(row)].spreadsheetName

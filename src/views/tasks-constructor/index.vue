@@ -145,13 +145,15 @@ export default {
       const path = 'http://localhost:8080/courses'
       axios.get(path).then(
         res => {
-          this.courses = res.data
+          console.log(res.data)
+          console.log(res.data.courses[0])
+          //this.courses = res.status
         },
         error => {
           console.error(error)
         },
       )
-      console.log(this.courses)
+      //console.log(this.courses)
     },
     handle(row) {
       this.chosen = true;
