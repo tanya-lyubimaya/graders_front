@@ -5,6 +5,25 @@
     <el-button class="buttonPublishGrader" type="primary" @click="handleClickPublishGrader()">Опубликовать грейдер</el-button>
     <el-button class="buttonCreateVariants" type="primary" @click="handleClickCreateVariants()">Создать варианты для КИМа</el-button>
     <el-button class="buttonGiveOutVariants" type="primary" @click="handleClickGiveOutVariants()">Раздать варианты для КИМа</el-button>
+    <h3>Таблица курсов</h3>
+    <el-table v-if="this.courses.length > 0" ref="singleTable" :data="courses" style="margin: 7%" @cell-click="handle">
+      <el-table-column
+        prop="name"
+        label="Название курса"
+        width="250"
+      />
+      <el-table-column
+        prop="alternate_link"
+        label="Ссылка на курс"
+        width="200"
+      />
+      <!--el-table-column
+        prop="???"
+        label="Число учащихся"
+        width="100"
+      /-->
+    </el-table>
+    <h3>Таблица КИМов</h3>
     <el-table v-if="this.courses.length > 0" ref="singleTable" :data="courses" style="margin: 7%" @cell-click="handle">
       <el-table-column
         prop="name"
@@ -32,7 +51,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      cmms: [],
+      CMMs: [],
       courses: [],
       currentCmm: '',
       chosen: false,
@@ -47,6 +66,7 @@ export default {
   },
   created() {
     this.getCourses();
+    this.getCMMs();
   },
   methods: {
     handleClickCreateGrader() {
@@ -84,12 +104,11 @@ export default {
         type: 'warning'
       })
     },
-    getCmms() {
-      console.log('started method getCmms()')
-      const path = 'http://localhost:5000/get_cmms'
+    getCMMs() {
+      const path = 'http://localhost:8080/cmms'
       axios.get(path).then(
         res => {
-          this.cmms = res.data
+          this.cmms = res.data.cmms
         },
         error => {
           console.error(error)
@@ -97,21 +116,15 @@ export default {
       )
     },
     getCourses() {
-      console.log('started method getCourses()')
       const path = 'http://localhost:8080/courses'
       axios.get(path).then(
         res => {
-          //console.log(res.data)
-          //console.log(res.data.courses[0])
-          console.log(res.data.courses)
           this.courses = res.data.courses
-          //this.courses = res.status
         },
         error => {
           console.error(error)
         },
       )
-      //console.log(this.courses)
     },
     handle(row) {
       this.chosen = true;
