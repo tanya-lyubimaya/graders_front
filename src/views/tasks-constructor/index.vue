@@ -60,7 +60,7 @@
             Управление КИМом
           </el-button>
           <el-button
-            @click.native.prevent="deleteCMM(scope.$index, cmms)"
+            @click.native.prevent="deleteCMM(scope.row.id, cmms)"
             type="danger"
             size="small"
           >
@@ -168,8 +168,9 @@ export default {
     openCourse(index) {
       window.open(this.courses[index].alternate_link, "_blank");
     },
-    deleteCMM(index, rows) {
-      rows.splice(index, 1);
+    deleteCMM(id, cmms) {
+      let i = cmms.map(item => item.id).indexOf(id)
+      this.$delete(this.cmms, i)
     },
     createVariants() {
       this.$router.push({ name: "Create Variants" });
