@@ -47,42 +47,19 @@
         <template slot-scope="scope">
           <el-button
             @click.native.prevent="openCMM(scope.$index)"
-            type="text"
             size="small"
           >
             Открыть КИМ
           </el-button>
           <el-button
             @click.native.prevent="createVariants()"
-            type="text"
             size="small"
           >
-            Сформировать билеты
-          </el-button>
-          <el-button
-            @click.native.prevent="openCMM(scope.$index)"
-            type="text"
-            size="small"
-          >
-            Посмотреть билеты
-          </el-button>
-          <el-button
-            @click.native.prevent="giveOutVariants()"
-            type="text"
-            size="small"
-          >
-            Раздать билеты
-          </el-button>
-          <el-button
-            @click.native.prevent="deleteCMM(scope.$index, cmms)"
-            type="text"
-            size="small"
-          >
-            Удалить билеты
+            Управление КИМом
           </el-button>
           <el-button
             @click.native.prevent="openCMM(scope.$index, cmms)"
-            type="text"
+            type="danger"
             size="small"
           >
             Удалить КИМ
