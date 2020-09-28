@@ -18,6 +18,14 @@
           placeholder="Введите название курса для поиска"/>
       </template>
     </el-table-column>
+    <el-table-column
+      label="Действия">
+      <template slot-scope="scope">
+        <el-button
+          size="mini"
+          @click="openCourse(scope.$index, scope.row)">Перейти к курсу</el-button>
+      </template>
+    </el-table-column>
   </el-table>
 
     <h3>Таблица КИМов</h3>
@@ -25,7 +33,7 @@
       <el-table-column type="expand">
         <template slot-scope="scope">
           <el-button
-            @click.native.prevent="openCMM(scope.$index, cmms)"
+            @click.native.prevent="openCMM(scope.$index)"
             type="text"
             size="small"
           >
@@ -39,7 +47,7 @@
             Сформировать билеты
           </el-button>
           <el-button
-            @click.native.prevent="openCMM(scope.$index, cmms)"
+            @click.native.prevent="openCMM(scope.$index)"
             type="text"
             size="small"
           >
@@ -148,13 +156,13 @@ export default {
         }
       );
     },
-    openCMM(index, cmms) {
+    openCMM(index) {
       console.log(index);
-      console.log(cmms);
       //window.open(this.cmms.alternate_link, "_blank");
     },
-    openCourse(index, courses) {
-      console.log(courses[index]);
+    openCourse(index) {
+      console.log(index)
+      window.open(this.courses[index].alternate_link, "_blank");
     },
     deleteCMM(index, rows) {
       rows.splice(index, 1);
