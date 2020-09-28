@@ -1,44 +1,25 @@
 <template>
   <div class="wrapper">
     <h1 class="title">База заданий</h1>
-    <el-button
-      class="buttonCreateGrader"
-      type="primary"
-      @click="handleClickCreateGrader()"
-      >Создать грейдер</el-button
-    >
-    <el-button
-      class="buttonPublishGrader"
-      type="primary"
-      @click="handleClickPublishGrader()"
-      >Опубликовать грейдер</el-button
-    >
     <h3>Таблица курсов</h3>
-    <el-table
-      v-if="this.courses.length > 0"
-      :data="courses"
-      style="width: 100%"
-      max-height="300"
-    >
-      <el-table-column fixed prop="name" label="Название курса" width="250" @cell-click="">
-      </el-table-column>
-      <el-table-column prop="alternate_link" label="Ссылка на курс" width="500">
-        <template slot-scope="scope">
-          <el-button
-            @click.native.prevent="openCourse(scope.$index, courses)"
-            type="text"
-            size="small"
-          >
-          Открыть курс
-          </el-button>
-        </template>
-      </el-table-column>
-      <!--el-table-column
-        prop="???"
-        label="Число учащихся"
-        width="100"
-      /-->
-    </el-table>
+  <el-table
+    :data="courses.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+    style="width: 100%">
+    <el-table-column
+      label="Название курса"
+      prop="name">
+    </el-table-column>
+    <el-table-column
+      align="right">
+      <template slot="header" slot-scope="scope">
+        <el-input
+          v-model="search"
+          size="mini"
+          placeholder="Введите название курса для поиска"/>
+      </template>
+    </el-table-column>
+  </el-table>
+
     <h3>Таблица КИМов</h3>
     <el-table :data="courses" style="width: 100%" max-height="300">
       <el-table-column type="expand">
@@ -129,6 +110,7 @@ export default {
         { title: "Biology", amount: 10, value: "" },
         { title: "Maths", amount: 7, value: "" },
       ],
+      search: ""
     };
   },
   created() {
@@ -159,6 +141,7 @@ export default {
       axios.get(path).then(
         (res) => {
           this.courses = res.data.courses;
+          console.log(res.data.courses)
         },
         (error) => {
           console.error(error);
