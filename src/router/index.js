@@ -109,7 +109,7 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'https://github.com/shorygina/graders_front',
+        path: 'https://github.com/the-couch-potatoes',
         meta: { title: 'Github проекта', icon: 'link' }
       }
     ]
