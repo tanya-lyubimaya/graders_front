@@ -109,8 +109,8 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'https://github.com/the-couch-potatoes',
-        meta: { title: 'Github проекта', icon: 'link' }
+        path: 'https://git.miem.hse.ru/19101',
+        meta: { title: 'Gitlab проекта', icon: 'link' }
       }
     ]
   },

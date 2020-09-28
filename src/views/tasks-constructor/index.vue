@@ -133,7 +133,7 @@ export default {
       this.$router.push({ name: "Publish Grader" });
     },*/
     getCMMs() {
-      const path = "http://localhost:8080/cmms";
+      const path = "http://172.18.150.140:8083/cmms";
       axios.get(path).then(
         (res) => {
           this.cmms = res.data.cmms;
@@ -145,11 +145,10 @@ export default {
       );
     },
     getCourses() {
-      const path = "http://localhost:8080/courses";
+      const path = "http://172.18.150.140:8083/courses";
       axios.get(path).then(
         (res) => {
           this.courses = res.data.courses;
-          console.log(res.data.courses)
         },
         (error) => {
           console.error(error);
