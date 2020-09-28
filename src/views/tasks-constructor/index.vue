@@ -42,11 +42,13 @@
           (data) =>
             !searchCMM || data.name.toLowerCase().includes(searchCMM.toLowerCase())
         )
-      " style="width: 100%" max-height="300">
+      "
+      :default-sort = "{prop: 'created_at', order: 'descending'}"
+      style="width: 100%" max-height="300">
       <el-table-column type="expand">
         <template slot-scope="scope">
           <el-button
-            @click.native.prevent="openCMM(scope.$index)"
+            @click.native.prevent="openCMM(scope.row.folder_link)"
             size="small"
           >
             Открыть КИМ
@@ -58,7 +60,7 @@
             Управление КИМом
           </el-button>
           <el-button
-            @click.native.prevent="openCMM(scope.$index, cmms)"
+            @click.native.prevent="deleteCMM(scope.$index, cmms)"
             type="danger"
             size="small"
           >
@@ -67,6 +69,10 @@
         </template>
       </el-table-column>
       <el-table-column prop="name" label="Название КИМа">
+      </el-table-column>
+      <el-table-column prop="description" label="Описание КИМа">
+      </el-table-column>
+      <el-table-column prop="created_at" label="Дата создания КИМа" sortable>
       </el-table-column>
       <el-table-column align="right">
         <template slot="header" slot-scope="scope">
@@ -156,12 +162,10 @@ export default {
         }
       );
     },
-    openCMM(index) {
-      console.log(index);
-      //window.open(this.cmms.alternate_link, "_blank");
+    openCMM(link) {
+      window.open(link, "_blank");
     },
     openCourse(index) {
-      console.log(index);
       window.open(this.courses[index].alternate_link, "_blank");
     },
     deleteCMM(index, rows) {
