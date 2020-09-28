@@ -88,6 +88,13 @@ export const constantRoutes = [
         hidden: true
       },
       {
+        path: 'manage-cmm',
+        name: 'Manage CMM',
+        component: () => import('@/views/tasks-constructor/cmm_manage'),
+        meta: { title: 'Управление КИМом' },
+        hidden: true
+      },
+      {
         path: 'create-variants',
         name: 'Create Variants',
         component: () => import('@/views/tasks-constructor/cmm_create_variants'),

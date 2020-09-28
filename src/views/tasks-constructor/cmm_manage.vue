@@ -176,12 +176,6 @@ export default {
       let i = cmms.map(item => item.id).indexOf(id)
       this.$delete(this.cmms, i)
     },
-    /*createVariants() {
-      this.$router.push({ name: "Create Variants" });
-    },
-    giveOutVariants() {
-      this.$router.push({ name: "Give Out Variants" });
-    },*/
   },
 };
 </script>
