@@ -1,0 +1,16 @@
+// cover some element-ui styles for text-overflow in checkboxes
+
+.statistics-checkbox-item .el-checkbox__label {
+  white-space: normal;
+}
+
+.statistics-checkbox-item .el-checkbox__input {
+  vertical-align: middle;
+}
+
+.statistics-checkbox-group .el-checkbox--medium.is-bordered{
+  height: auto;
+  display: flex;
+  align-items: center;
+  width: auto;
+}

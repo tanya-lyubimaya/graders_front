@@ -92,13 +92,14 @@ export const constantRoutes = [
         name: 'Manage CMM',
         component: () => import('@/views/tasks-constructor/cmm_manage'),
         meta: { title: 'Управление КИМом' },
+        props: true,
         hidden: true
       },
       {
         path: 'create-variants',
         name: 'Create Variants',
         component: () => import('@/views/tasks-constructor/cmm_create_variants'),
-        meta: { title: 'Создать варианты' },
+        meta: { title: 'Сгенерировать варианты' },
         hidden: true
       },
       {

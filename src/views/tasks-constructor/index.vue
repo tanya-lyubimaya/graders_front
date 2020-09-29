@@ -140,12 +140,6 @@ export default {
     this.getCMMs();
   },
   methods: {
-    /*handleClickCreateGrader() {
-      this.$router.push({ name: "Graders Constructor" });
-    },
-    handleClickPublishGrader() {
-      this.$router.push({ name: "Publish Grader" });
-    },*/
     getCMMs() {
       const path = "http://172.18.150.140:8083/cmms";
       axios.get(path).then(
@@ -174,7 +168,7 @@ export default {
       window.open(link, "_blank");
     },
     manageCMM(id) {
-      this.$router.push({ name: "Manage CMM" });
+      this.$router.push({ name: "Manage CMM", params: { cmmID: id} });
     },
     openCourse(index) {
       window.open(this.courses[index].alternate_link, "_blank");
@@ -203,13 +197,7 @@ export default {
             type: "error",
           });
         });
-    },
-    /*createVariants() {
-      this.$router.push({ name: "Create Variants" });
-    },
-    giveOutVariants() {
-      this.$router.push({ name: "Give Out Variants" });
-    },*/
+    }
   },
 };
 </script>

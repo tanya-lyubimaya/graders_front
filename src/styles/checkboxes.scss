@@ -1,0 +1,25 @@
+// cover some element-ui styles for contrast checkboxes
+
+.contrast-checkbox .el-checkbox__input.is-checked+.el-checkbox__label {
+  color: #303133;
+}
+
+.contrast-checkbox  .el-checkbox__input.is-checked
+.el-checkbox__inner, .el-checkbox__input.is-indeterminate
+.el-checkbox__inner {
+  border-color: white;
+}
+
+.contrast-checkbox--dark  .el-checkbox__input.is-checked
+.el-checkbox__inner, .el-checkbox__input.is-indeterminate
+.el-checkbox__inner {
+  border-color: #606266;
+}
+
+.contrast-checkbox {
+  color: #303133;
+}
+
+.el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after {
+  border-color: #000;
+}
