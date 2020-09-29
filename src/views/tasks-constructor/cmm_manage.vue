@@ -175,6 +175,16 @@ export default {
     deleteCMM(id, cmms) {
       let i = cmms.map(item => item.id).indexOf(id)
       this.$delete(this.cmms, i)
+      const path = `http://172.18.150.140:8083/cmms/${id}/sections`
+      axios.delete(path)
+        .then(() => {
+          this.getCourses();
+          console.log('Removed cmm successfully!!')
+        })
+        .catch((error) => {
+          console.error(error);
+          this.getCourses();
+        });
     },
   },
 };

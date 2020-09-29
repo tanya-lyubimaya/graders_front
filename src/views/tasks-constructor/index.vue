@@ -9,7 +9,7 @@
             !search || data.name.toLowerCase().includes(search.toLowerCase())
         )
       "
-      :default-sort = "{prop: 'creation_time', order: 'descending'}"
+      :default-sort="{ prop: 'creation_time', order: 'descending' }"
       style="width: 100%"
     >
       <el-table-column label="Название курса" prop="name"> </el-table-column>
@@ -17,7 +17,11 @@
       </el-table-column>
       <el-table-column label="Число преподавателей" prop="teachers_count">
       </el-table-column>
-      <el-table-column label="Дата создания курса" prop="creation_time" sortable>
+      <el-table-column
+        label="Дата создания курса"
+        prop="creation_time"
+        sortable
+      >
       </el-table-column>
       <el-table-column label="Действия">
         <template slot-scope="scope">
@@ -38,14 +42,18 @@
     </el-table>
 
     <h3>Таблица КИМов</h3>
-    <el-table :data="
+    <el-table
+      :data="
         cmms.filter(
           (data) =>
-            !searchCMM || data.name.toLowerCase().includes(searchCMM.toLowerCase())
+            !searchCMM ||
+            data.name.toLowerCase().includes(searchCMM.toLowerCase())
         )
       "
-      :default-sort = "{prop: 'created_at', order: 'descending'}"
-      style="width: 100%" max-height="300">
+      :default-sort="{ prop: 'created_at', order: 'descending' }"
+      style="width: 100%"
+      max-height="300"
+    >
       <el-table-column type="expand">
         <template slot-scope="scope">
           <el-button
@@ -69,8 +77,7 @@
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="Название КИМа">
-      </el-table-column>
+      <el-table-column prop="name" label="Название КИМа"> </el-table-column>
       <el-table-column prop="description" label="Описание КИМа">
       </el-table-column>
       <el-table-column prop="created_at" label="Дата создания КИМа" sortable>
@@ -125,7 +132,7 @@ export default {
         { title: "Maths", amount: 7, value: "" },
       ],
       search: "",
-      searchCMM: ""
+      searchCMM: "",
     };
   },
   created() {
@@ -173,8 +180,29 @@ export default {
       window.open(this.courses[index].alternate_link, "_blank");
     },
     deleteCMM(id, cmms) {
-      let i = cmms.map(item => item.id).indexOf(id)
-      this.$delete(this.cmms, i)
+      let i = cmms.map((item) => item.id).indexOf(id);
+      this.$delete(this.cmms, i);
+      const path = `http://172.18.150.140:8083/cmms/${id}/sections`;
+      axios
+        .delete(path)
+        .then(() => {
+          this.getCMMs();
+          console.log("Removed cmm successfully!!");
+          this.$message({
+            showClose: true,
+            message: "КИМ успешно удалён!",
+            type: "success",
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          this.getCMMs();
+          this.$message({
+            showClose: true,
+            message: "При удалении КИМа возникла ошибка!",
+            type: "error",
+          });
+        });
     },
     /*createVariants() {
       this.$router.push({ name: "Create Variants" });
