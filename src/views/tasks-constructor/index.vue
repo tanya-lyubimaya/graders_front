@@ -147,15 +147,6 @@ export default {
       cmms: [],
       courses: [],
       currentCmm: "",
-      chosen: false,
-      amountOfVariants: "",
-      spreadsheetName: "test #1",
-      spreadsheetId: "333",
-      spreadsheetInfo: [
-        { title: "Geography", amount: 5, value: "" },
-        { title: "Biology", amount: 10, value: "" },
-        { title: "Maths", amount: 7, value: "" },
-      ],
       search: "",
       searchCMM: "",
       cmmName: "",
@@ -247,11 +238,18 @@ export default {
             }
           );
       } else {
-        this.$message({
-          showClose: true,
-          message: "Слишком короткое название для КИМа!",
-          type: "error",
-        });
+        if (this.cmmName.length == 0)
+          this.$message({
+            showClose: true,
+            message: "Введите название КИМа!",
+            type: "error",
+          });
+        else
+          this.$message({
+            showClose: true,
+            message: "Слишком короткое название для КИМа!",
+            type: "error",
+          });
       }
     },
     openCMM(link) {
