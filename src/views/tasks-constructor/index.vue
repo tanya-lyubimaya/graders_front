@@ -92,9 +92,31 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-button type="primary" :loading="cmmLoading" @click="createCMM()"
-      >Создать КИМ</el-button
+    <el-button type="primary" :disabled="cmmLoading" @click="addCMM()"
+      >Добавить КИМ</el-button
     >
+    <div v-if="clickedAddCMM">
+      <el-input
+        type="text"
+        placeholder="Название КИМа"
+        v-model="cmmName"
+        maxlength="100"
+        show-word-limit
+      >
+      </el-input>
+      <div style="margin: 20px 0"></div>
+      <el-input
+        type="textarea"
+        placeholder="Описание КИМа"
+        v-model="cmmDescription"
+        maxlength="300"
+        show-word-limit
+      >
+      </el-input>
+      <el-button type="primary" :loading="cmmLoading" @click="createCMM()"
+        >Создать КИМ</el-button
+      >
+    </div>
     <!--h3>Таблица грейдеров</h3>
     <el-table :data="courses" style="width: 100%" max-height="300">
       <el-table-column fixed prop="name" label="Название грейдера" width="250">
@@ -136,7 +158,10 @@ export default {
       ],
       search: "",
       searchCMM: "",
-      cmmLoading: false
+      cmmName: "",
+      cmmDescription: "",
+      cmmLoading: false,
+      clickedAddCMM: false,
     };
   },
   created() {
@@ -168,54 +193,72 @@ export default {
         }
       );
     },
+    addCMM() {
+      (this.clickedAddCMM = true), this.createCMM;
+    },
     createCMM() {
-      this.cmmLoading = true
+      if (this.cmmName.length >= 3) {
+        this.cmmLoading = true;
+        this.$message({
+          showClose: true,
+          message: "КИМ создаётся...",
+        });
         axios
           .post(
-            'http://172.18.150.140:8083/cmms',
+            "http://172.18.150.140:8083/cmms",
             {
-              name: 'aaa',
-              description: 'ooo'
-            },
-            {
-              //headers: {
-                //"X-API-KEY": "7729975492c74225878bd0f54be97b6b",
-                //withCredentials: true,
-              //},
+              name: this.cmmName,
+              description: this.cmmDescription,
             }
+            /*{
+            headers: {
+            "X-API-KEY": "7729975492c74225878bd0f54be97b6b",
+            withCredentials: true,
+            },
+          }*/
           )
           .then(
             (res) => {
-              console.log(res)
+              console.log(res);
               if (res.data.status === "success") {
                 this.cmms.push(res.data.cmm);
-                getCMMs()
+                this.getCMMs();
                 this.$message({
                   showClose: true,
-                  message: "КИМ создан!",
+                  message: "КИМ успешно создан!",
                   type: "success",
                 });
+                this.clickedAddCMM = false;
+                this.cmmLoading = false;
+                this.cmmName = "";
+                this.cmmDescription = "";
               } else {
                 this.$message({
                   showClose: true,
                   message: "Ошибка при создании КИМа",
                   type: "error",
                 });
+                this.clickedAddCMM = false;
+                this.cmmLoading = false;
               }
             },
             (error) => {
               console.error(error);
             }
-          )
-          .catch(function () {
-            console.log("FAILURE!!");
-          });
+          );
+      } else {
+        this.$message({
+          showClose: true,
+          message: "Слишком короткое название для КИМа!",
+          type: "error",
+        });
+      }
     },
     openCMM(link) {
       window.open(link, "_blank");
     },
     manageCMM(id) {
-      this.$router.push({ name: "Manage CMM", params: { cmmID: id} });
+      this.$router.push({ name: "Manage CMM", params: { cmmID: id } });
     },
     openCourse(index) {
       window.open(this.courses[index].alternate_link, "_blank");
@@ -243,7 +286,7 @@ export default {
             type: "error",
           });
         });
-    }
+    },
   },
 };
 </script>
