@@ -92,6 +92,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-button type="primary" :loading="cmmLoading" @click="createCMM()"
+      >Создать КИМ</el-button
+    >
     <!--h3>Таблица грейдеров</h3>
     <el-table :data="courses" style="width: 100%" max-height="300">
       <el-table-column fixed prop="name" label="Название грейдера" width="250">
@@ -133,6 +136,7 @@ export default {
       ],
       search: "",
       searchCMM: "",
+      cmmLoading: false
     };
   },
   created() {
@@ -164,6 +168,49 @@ export default {
         }
       );
     },
+    createCMM() {
+      this.cmmLoading = true
+        axios
+          .post(
+            'http://172.18.150.140:8083/cmms',
+            {
+              name: 'aaa',
+              description: 'ooo'
+            },
+            {
+              //headers: {
+                //"X-API-KEY": "7729975492c74225878bd0f54be97b6b",
+                //withCredentials: true,
+              //},
+            }
+          )
+          .then(
+            (res) => {
+              console.log(res)
+              if (res.data.status === "success") {
+                this.cmms.push(res.data.cmm);
+                getCMMs()
+                this.$message({
+                  showClose: true,
+                  message: "КИМ создан!",
+                  type: "success",
+                });
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: "Ошибка при создании КИМа",
+                  type: "error",
+                });
+              }
+            },
+            (error) => {
+              console.error(error);
+            }
+          )
+          .catch(function () {
+            console.log("FAILURE!!");
+          });
+    },
     openCMM(link) {
       window.open(link, "_blank");
     },
@@ -181,7 +228,6 @@ export default {
         .delete(path)
         .then(() => {
           this.getCMMs();
-          console.log("Removed cmm successfully!!");
           this.$message({
             showClose: true,
             message: "КИМ успешно удалён!",

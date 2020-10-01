@@ -2,8 +2,12 @@
   <div class="wrapper">
     <h1 class="title">База заданий</h1>
     <h3>Управление КИМом</h3>
-    <el-button type="primary" @click="createVariants()">Сгенерировать варианты</el-button>
-    <el-button type="primary" @click="giveOutVariants()">Раздать варианты</el-button>
+    <el-button type="primary" @click="createVariants()"
+      >Сгенерировать варианты</el-button
+    >
+    <el-button type="primary" @click="giveOutVariants()"
+      >Раздать варианты</el-button
+    >
   </div>
 </template>
 
@@ -13,7 +17,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      id: 0,
+      id: -1,
       cmms: [],
       courses: [],
       currentCmm: "",
@@ -27,14 +31,14 @@ export default {
         { title: "Maths", amount: 7, value: "" },
       ],
       search: "",
-      searchCMM: ""
+      searchCMM: "",
     };
   },
   methods: {
     createVariants() {
-      //this.id = this.$route.params.cmmID;
-      console.log(this.$route.params.cmmID)
-      //this.$router.push({ name: "Create Variants" });
+      this.id = this.$route.params.cmmID;
+      console.log(this.$route.params.cmmID);
+      console.log(this.id);
     },
     giveOutVariants() {
       this.$router.push({ name: "Give Out Variants" });
