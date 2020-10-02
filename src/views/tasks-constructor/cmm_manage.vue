@@ -20,16 +20,8 @@ export default {
       id: -1,
       cmms: [],
       courses: [],
-      currentCmm: "",
+      sections: [],
       chosen: false,
-      amountOfVariants: "",
-      spreadsheetName: "test #1",
-      spreadsheetId: "333",
-      spreadsheetInfo: [
-        { title: "Geography", amount: 5, value: "" },
-        { title: "Biology", amount: 10, value: "" },
-        { title: "Maths", amount: 7, value: "" },
-      ],
       search: "",
       searchCMM: "",
     };
@@ -39,6 +31,16 @@ export default {
       this.id = this.$route.params.cmmID;
       console.log(this.$route.params.cmmID);
       console.log(this.id);
+      const path = `http://172.18.150.140:8083/cmms/${this.id}/sections`;
+      axios.get(path).then(
+        (res) => {
+          console.log(res.data);
+          this.sections = res.data.sections
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
     },
     giveOutVariants() {
       this.$router.push({ name: "Give Out Variants" });

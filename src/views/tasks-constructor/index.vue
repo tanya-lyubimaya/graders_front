@@ -57,7 +57,7 @@
       <el-table-column type="expand">
         <template slot-scope="scope">
           <el-button
-            @click.native.prevent="openCMM(scope.row.folder_link)"
+            @click.native.prevent="openCMM(scope.row.spreadsheet_link)"
             size="small"
           >
             Открыть КИМ
@@ -264,7 +264,7 @@ export default {
     deleteCMM(id, cmms) {
       let i = cmms.map((item) => item.id).indexOf(id);
       this.$delete(this.cmms, i);
-      const path = `http://172.18.150.140:8083/cmms/${id}/sections`;
+      const path = `http://172.18.150.140:8083/cmms/${id}`;
       axios
         .delete(path)
         .then(() => {
