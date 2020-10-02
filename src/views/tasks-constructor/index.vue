@@ -255,8 +255,8 @@ export default {
     openCMM(link) {
       window.open(link, "_blank");
     },
-    manageCMM(id) {
-      this.$router.push({ name: "Manage CMM", params: { cmmID: id } });
+    manageCMM(CMMid) {
+      this.$router.push({ name: "Manage CMM", params: { id: CMMid } });
     },
     openCourse(index) {
       window.open(this.courses[index].alternate_link, "_blank");

@@ -11,12 +11,14 @@
         </a>
       </section>
     </div>
-    <el-table v-if="cmms.length > 0" ref="singleTable" :data="cmms" style="margin: 7%" @cell-click="handle">
-      <el-table-column
-        prop="spreadsheetName"
-        label="Имя КИМа"
-        width="300"
-      />
+    <el-table
+      v-if="cmms.length > 0"
+      ref="singleTable"
+      :data="cmms"
+      style="margin: 7%"
+      @cell-click="handle"
+    >
+      <el-table-column prop="spreadsheetName" label="Имя КИМа" width="300" />
       <el-table-column
         prop="spreadsheetUrl"
         label="Сслыка на таблицу"
@@ -24,13 +26,22 @@
       />
     </el-table>
     <section class="container" v-if="chosen" id="base">
-      <h4>Заполните данные для генерации вариантов из КИМа "{{ currentCmm }}" </h4>
+      <h4>
+        Заполните данные для генерации вариантов из КИМа "{{ currentCmm }}"
+      </h4>
       <div v-if="spreadsheetInfo">
         <el-form>
           <p>Укажите количество вопросов из каждого раздела</p>
           <el-form v-for="info in spreadsheetInfo" :key="info.title">
-            <label for="info.title"><p>{{ info.title }}</p></label>
-            <el-select ref="selectTopics" name="info.title" v-model="info.value" id="info.title">
+            <label for="info.title"
+              ><p>{{ info.title }}</p></label
+            >
+            <el-select
+              ref="selectTopics"
+              name="info.title"
+              v-model="info.value"
+              id="info.title"
+            >
               <el-option :key="0" :value="''"></el-option>
               <el-option v-for="i in info.amount" :value="i" :key="i">
                 {{ i }}
@@ -38,14 +49,17 @@
             </el-select>
           </el-form>
           <el-form style="margin-top: 1rem">
-            <label for="amountOfVarients"><p>Укажите количество вариантов</p></label>
+            <label for="amountOfVarients"
+              ><p>Укажите количество вариантов</p></label
+            >
             <el-input
               v-model="amountOfVariants"
               type="number"
               placeholder="For example, 10"
               name="amountOfVariants"
               id="amountOfVariants"
-              min="1">
+              min="1"
+            >
             </el-input>
           </el-form>
           <el-form-item>
@@ -55,10 +69,12 @@
                 id="submit"
                 native-type="submit"
                 class="buttonCreate"
-                @click="createVariants">Добавить</el-button>
-              <el-button
-                @click="onCancel"
-                class="buttonCancel">Отменить</el-button>
+                @click="createVariants"
+                >Добавить</el-button
+              >
+              <el-button @click="onCancel" class="buttonCancel"
+                >Отменить</el-button
+              >
             </div>
           </el-form-item>
         </el-form>
@@ -68,27 +84,27 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   data() {
     return {
       id: -1,
       cmms: [],
-      currentCmm: '',
+      currentCmm: "",
       chosen: false,
-      amountOfVariants: '',
-      spreadsheetName: 'test #1',
-      spreadsheetId: '333',
+      amountOfVariants: "",
+      spreadsheetName: "test #1",
+      spreadsheetId: "333",
       spreadsheetInfo: [
-        { title: 'Geography', amount: 5, value: '' },
-        { title: 'Biology', amount: 10, value: '' },
-        { title: 'Maths', amount: 7, value: '' }]
-    }
+        { title: "Geography", amount: 5, value: "" },
+        { title: "Biology", amount: 10, value: "" },
+        { title: "Maths", amount: 7, value: "" },
+      ],
+    };
   },
   mounted() {
-    this.id = this.$route.params.cmmID;
-    console.log(this.$route.params.cmmID);
+    this.id = this.$route.params.id;
     console.log(this.id);
   },
   methods: {
@@ -99,14 +115,11 @@ export default {
       // createVariants(spreadsheetInfo,spreadsheetId);
     },
     createVariants() {
-      this.id = this.$route.params.cmmID;
-      console.log(this.$route.params.cmmID);
-      console.log(this.id);
       const path = `http://172.18.150.140:8083/cmms/${this.id}/sections`;
       axios.get(path).then(
         (res) => {
           console.log(res.data);
-          this.sections = res.data.sections
+          this.sections = res.data.sections;
         },
         (error) => {
           console.error(error);
@@ -114,7 +127,7 @@ export default {
       );
       this.$router.push({ name: "Create Variants" });
     },
-    createVariants(spreadsheetInfo,spreadsheetId) {
+    createVariants(spreadsheetInfo, spreadsheetId) {
       let amount = this.amountOfVariants;
       let questions = [];
       let inpInfo = this.$refs.selectTopics;
@@ -122,15 +135,15 @@ export default {
       for (let i = 0; i < inpInfo.length; i++) {
         questions.push(inpInfo[i].value);
       }
-      const questionsAsString = questions.join(',');
+      const questionsAsString = questions.join(",");
       // window.location.href = `/create_variants?questions=${questionsAsString}&amount=${amount}&spreadsheet_id=${spreadsheetId}`;
     },
     onCancel() {
       this.$message({
-        message: 'cancel!',
-        type: 'warning'
-      })
-    }
-  }
-}
+        message: "cancel!",
+        type: "warning",
+      });
+    },
+  },
+};
 </script>

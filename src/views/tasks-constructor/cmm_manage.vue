@@ -30,13 +30,12 @@ export default {
     };
   },
   mounted() {
-    this.id = this.$route.params.cmmID;
-    console.log(this.$route.params.cmmID);
+    this.id = this.$route.params.id;
     console.log(this.id);
   },
   methods: {
     handleCreateVariants() {
-      this.$router.push({ name: "Create Variants", params: { cmmID: this.id } });
+      this.$router.push({ name: "Create Variants", params: { id: this.id } });
     },
     handleGiveOutVariants() {
       this.$router.push({ name: "Give Out Variants" });

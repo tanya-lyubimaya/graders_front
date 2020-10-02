@@ -56,9 +56,9 @@ export const constantRoutes = [
   },
 
   {
-    path: '/for-teachers',
+    path: '/for_teachers',
     component: Layout,
-    redirect: '/for-teachers/graders-constructor',
+    redirect: '/tasks_constructor',
     name: 'For teachers',
     alwaysShow: true,
     meta: {
@@ -67,27 +67,27 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'tasks-constructor',
+        path: 'tasks_constructor',
         name: 'Tasks Constructor',
         component: () => import('@/views/tasks-constructor/index'),
         meta: { title: 'Конструктор заданий' }
       },
-      {
-        path: 'graders-constructor',
+      /*{
+        path: 'graders_constructor',
         name: 'Graders Constructor',
         component: () => import('@/views/tasks-constructor/grader_create'),
         meta: { title: 'Конструктор грейдеров' },
         hidden: true
       },
       {
-        path: 'publish-grader',
+        path: 'publish_grader',
         name: 'Publish Grader',
         component: () => import('@/views/tasks-constructor/grader_publish'),
         meta: { title: 'Публикация грейдера' },
         hidden: true
-      },
+      },*/
       {
-        path: 'manage-cmm',
+        path: '/for_teachers/tasks_constructor/:id/cmm_manage',
         name: 'Manage CMM',
         component: () => import('@/views/tasks-constructor/cmm_manage'),
         meta: { title: 'Управление КИМом' },
@@ -95,14 +95,14 @@ export const constantRoutes = [
         hidden: true
       },
       {
-        path: 'create-variants',
+        path: '/for_teachers/tasks_constructor/:id/create_variants',
         name: 'Create Variants',
         component: () => import('@/views/tasks-constructor/cmm_create_variants'),
         meta: { title: 'Сгенерировать варианты' },
         hidden: true
       },
       {
-        path: 'give-out-variants',
+        path: '/for_teachers/tasks_constructor/:id/give_out_variants',
         name: 'Give Out Variants',
         component: () => import('@/views/tasks-constructor/cmm_give_out_variants'),
         meta: { title: 'Раздать варианты' },
