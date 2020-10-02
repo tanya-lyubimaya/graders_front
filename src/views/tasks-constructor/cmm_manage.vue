@@ -1,11 +1,14 @@
 <template>
   <div class="wrapper">
-    <h1 class="title">База заданий</h1>
-    <h3>Управление КИМом</h3>
-    <el-button type="primary" @click="createVariants()"
+    <h1>Управление КИМом</h1>
+    <h3>
+      Здесь позже будет статистика по текущему КИМу и сформированным из него
+      заданиям
+    </h3>
+    <el-button type="primary" @click="handleCreateVariants()"
       >Сгенерировать варианты</el-button
     >
-    <el-button type="primary" @click="giveOutVariants()"
+    <el-button type="primary" @click="handleGiveOutVariants()"
       >Раздать варианты</el-button
     >
   </div>
@@ -26,23 +29,16 @@ export default {
       searchCMM: "",
     };
   },
+  mounted() {
+    this.id = this.$route.params.cmmID;
+    console.log(this.$route.params.cmmID);
+    console.log(this.id);
+  },
   methods: {
-    createVariants() {
-      this.id = this.$route.params.cmmID;
-      console.log(this.$route.params.cmmID);
-      console.log(this.id);
-      const path = `http://172.18.150.140:8083/cmms/${this.id}/sections`;
-      axios.get(path).then(
-        (res) => {
-          console.log(res.data);
-          this.sections = res.data.sections
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
+    handleCreateVariants() {
+      this.$router.push({ name: "Create Variants", params: { cmmID: this.id } });
     },
-    giveOutVariants() {
+    handleGiveOutVariants() {
       this.$router.push({ name: "Give Out Variants" });
     },
   },

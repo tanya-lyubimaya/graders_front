@@ -73,6 +73,7 @@ import axios from 'axios'
 export default {
   data() {
     return {
+      id: -1,
       cmms: [],
       currentCmm: '',
       chosen: false,
@@ -85,8 +86,10 @@ export default {
         { title: 'Maths', amount: 7, value: '' }]
     }
   },
-  created() {
-    //this.getCmms();
+  mounted() {
+    this.id = this.$route.params.cmmID;
+    console.log(this.$route.params.cmmID);
+    console.log(this.id);
   },
   methods: {
     onSubmit() {
@@ -94,6 +97,22 @@ export default {
       // const spreadsheetInfo = JSON.parse(this.dataset.spreadsheetInfo);
       // const spreadsheetId = this.dataset.spreadsheetId;
       // createVariants(spreadsheetInfo,spreadsheetId);
+    },
+    createVariants() {
+      this.id = this.$route.params.cmmID;
+      console.log(this.$route.params.cmmID);
+      console.log(this.id);
+      const path = `http://172.18.150.140:8083/cmms/${this.id}/sections`;
+      axios.get(path).then(
+        (res) => {
+          console.log(res.data);
+          this.sections = res.data.sections
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+      this.$router.push({ name: "Create Variants" });
     },
     createVariants(spreadsheetInfo,spreadsheetId) {
       let amount = this.amountOfVariants;
@@ -111,33 +130,7 @@ export default {
         message: 'cancel!',
         type: 'warning'
       })
-    },
-    /*getCmms() {
-      console.log('started method getCmms()')
-      const path = 'http://localhost:5000/get_cmms'
-      axios.get(path).then(
-        res => {
-          this.cmms = res.data
-        },
-        error => {
-          console.error(error)
-        },
-      )
-    },*/
-    handle(row) {
-      this.chosen = true;
-      this.currentCmm = this.cmms[this.cmms.indexOf(row)].spreadsheetName
-      // сделать обработку
     }
-    /*function createVariants(spreadsheetInfo, spreadsheetId) {
-        let amount = $('#amountOfVariants').val();
-        let questions = [];
-        document
-            .querySelectorAll('.select-topics')
-            .forEach(select => questions.push($(select).val()));
-        const questionsAsString = questions.join(',');
-        window.location.href = `/create_variants?questions=${questionsAsString}&amount=${amount}&spreadsheet_id=${spreadsheetId}`;
-    }*/
   }
 }
 </script>
