@@ -1,6 +1,18 @@
 <template>
   <div class="wrapper">
     <h1>Сгенерировать варианты из КИМа</h1>
+    <el-select v-model="section" clearable placeholder="Select">
+      <el-option
+        v-for="section in sections"
+        :key="section.id"
+        :label="section.title"
+        :value="section.title"
+      >
+      </el-option>
+    </el-select>
+    <el-slider v-model="sections" :step="1" show-stops> </el-slider>
+    <el-button type="success" plain>Добавить тему</el-button>
+    <el-button type="danger" icon="el-icon-delete" circle></el-button>
     <el-button type="primary" @click="createVariants()"
       >Сгенерировать варианты</el-button
     >
@@ -15,6 +27,9 @@ export default {
     return {
       id: -1,
       cmms: [],
+      sections: [],
+      section: "",
+      value: "",
       currentCmm: "",
       chosen: false,
       amountOfVariants: "",
@@ -30,6 +45,8 @@ export default {
   mounted() {
     this.id = this.$route.params.id;
     console.log(this.id);
+    this.createVariants();
+    console.log(this.sections);
   },
   methods: {
     onSubmit() {
@@ -42,9 +59,7 @@ export default {
       const path = `http://172.18.150.140:8083/cmms/${this.id}/sections`;
       axios.get(path).then(
         (res) => {
-          //console.log(res.data);
           this.sections = res.data.sections;
-          console.log(this.sections);
         },
         (error) => {
           console.error(error);
