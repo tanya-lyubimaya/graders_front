@@ -2,7 +2,7 @@
   <div class="wrapper">
     <h1>Управление КИМом</h1>
     <h3>
-      Здесь позже будет статистика по текущему КИМу и сформированным из него
+      Здесь позже будет представлена статистика по текущему КИМу и сформированным из него
       заданиям
     </h3>
     <el-button type="primary" @click="handleCreateVariants()"
@@ -23,7 +23,6 @@ export default {
       id: -1,
       cmms: [],
       courses: [],
-      sections: [],
       chosen: false,
       search: "",
       searchCMM: "",
