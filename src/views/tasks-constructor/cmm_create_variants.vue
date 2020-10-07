@@ -4,7 +4,13 @@
     <ul>
       <li v-for="section in sections" :key="section.id">
         {{ section.title }}
-          <el-input-number size="mini" v-model="numOfQuestions" @change="handleChange" :min="0" :max="section.questions"></el-input-number>
+        <el-input-number
+          size="mini"
+          v-model="section.model"
+          @change="handleChange"
+          :min="0"
+          :max="section.questions"
+        ></el-input-number>
       </li>
     </ul>
     <el-button type="primary" @click="createVariants()"
@@ -23,7 +29,6 @@ export default {
       cmms: [],
       sections: [],
       section: "",
-      numOfQuestions: [],
       currentCmm: "",
       chosen: false,
       amountOfVariants: -1,
@@ -33,7 +38,9 @@ export default {
     this.id = this.$route.params.id;
     console.log(this.id);
     this.getSections();
-    console.log(this.sections);
+    this.sections.forEach(function (element) {
+      element.model = 0;
+    });
   },
   methods: {
     handleChange(value) {
@@ -56,10 +63,9 @@ export default {
         }
       );
     },
-    onSectionChanged() {
-      console.log(this.section);
+    createVariants() {
+      console.log(this.sections);
     },
-    createVariants() {},
     onCancel() {
       this.$message({
         message: "cancel!",
