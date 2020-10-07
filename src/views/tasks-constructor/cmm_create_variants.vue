@@ -1,6 +1,10 @@
 <template>
   <div class="wrapper">
     <h1>Сгенерировать варианты из КИМа "{{ this.name }}"</h1>
+    <p>
+      Пожалуйста, укажите количество вопросов из каждого раздела, на которое
+      необходимо будет ответить студенту в работе
+    </p>
     <ul>
       <li v-for="section in sections" :key="section.id">
         {{ section.title }}
@@ -13,6 +17,15 @@
         ></el-input-number>
       </li>
     </ul>
+    <h3>Количество вариантов</h3>
+    <p>Пожалуйста, укажите количество вариантов, которое нужно сгенерировать</p>
+    <el-input-number
+          size="mini"
+          v-model="numOfVariants"
+          @change="handleChange"
+          :min="1"
+          :max="50"
+        ></el-input-number>
     <el-button type="primary" @click="createVariants()"
       >Сгенерировать варианты</el-button
     >
@@ -30,15 +43,14 @@ export default {
       cmms: [],
       sections: [],
       section: "",
-      currentCmm: "",
-      chosen: false,
-      amountOfVariants: -1,
+      numOfVariants: -1,
     };
   },
   mounted() {
     this.id = this.$route.params.id;
     this.name = this.$route.params.name;
     this.getSections();
+    this.setNumOfQuestions();
   },
   methods: {
     handleChange(value) {
@@ -55,23 +67,27 @@ export default {
       axios.get(path).then(
         (res) => {
           this.sections = res.data.sections;
-          this.sections.forEach(function (element) {
-            element.numOfQuestions = 0;
-          });
         },
         (error) => {
           console.error(error);
         }
       );
     },
+    setNumOfQuestions() {
+      this.sections.forEach(function (element) {
+        element.numOfQuestions = 0;
+      });
+    },
     createVariants() {
       const path = `http://172.18.150.140:8083/cmms/${this.id}`;
+      console.log(this.sections);
       axios
         .post(
           path,
           {
             id: this.id,
             sections: this.sections,
+            num_of_variants: this.numOfVariants,
           }
           /*{
               headers: {
