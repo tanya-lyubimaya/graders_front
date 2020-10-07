@@ -165,7 +165,6 @@ export default {
       axios.get(path).then(
         (res) => {
           this.cmms = res.data.cmms;
-          console.log(res.data.cmms);
         },
         (error) => {
           console.error(error);
@@ -177,7 +176,6 @@ export default {
       axios.get(path).then(
         (res) => {
           this.courses = res.data.courses;
-          console.log(res.data.courses);
         },
         (error) => {
           console.error(error);

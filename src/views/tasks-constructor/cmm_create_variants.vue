@@ -6,7 +6,7 @@
         {{ section.title }}
         <el-input-number
           size="mini"
-          v-model="section.model"
+          v-model="section.numOfQuestions"
           @change="handleChange"
           :min="0"
           :max="section.questions"
@@ -36,11 +36,7 @@ export default {
   },
   mounted() {
     this.id = this.$route.params.id;
-    console.log(this.id);
     this.getSections();
-    this.sections.forEach(function (element) {
-      element.model = 0;
-    });
   },
   methods: {
     handleChange(value) {
@@ -57,6 +53,9 @@ export default {
       axios.get(path).then(
         (res) => {
           this.sections = res.data.sections;
+          this.sections.forEach(function (element) {
+            element.numOfQuestions = 0;
+          });
         },
         (error) => {
           console.error(error);
@@ -64,14 +63,52 @@ export default {
       );
     },
     createVariants() {
+      const path = `http://172.18.150.140:8083/cmms/${this.id}`;
       console.log(this.sections);
+      axios
+        .post(
+          path,
+          {
+            id: this.id,
+            sections: this.sections,
+          }
+          /*{
+              headers: {
+                "X-API-KEY": "7729975492c74225878bd0f54be97b6b",
+                withCredentials: true,
+              },
+            }*/
+        )
+        .then(
+          (res) => {
+            if (res.data.status === "success") {
+              this.$message({
+                showClose: true,
+                message: "Варианты для КИМа сгенерированы!",
+                type: "success",
+              });
+            } else {
+              this.$message({
+                showClose: true,
+                message: "Ошибка при генерации вариантов",
+                type: "error",
+              });
+            }
+          },
+          (error) => {
+            console.error(error);
+          }
+        )
+        .catch(function () {
+          console.log("FAILURE!!");
+        });
     },
-    onCancel() {
-      this.$message({
-        message: "cancel!",
-        type: "warning",
-      });
-    },
+  },
+  onCancel() {
+    this.$message({
+      message: "cancel!",
+      type: "warning",
+    });
   },
 };
 </script>
