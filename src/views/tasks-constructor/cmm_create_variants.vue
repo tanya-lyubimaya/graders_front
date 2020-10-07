@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <h1>Сгенерировать варианты из КИМа</h1>
+    <h1>Сгенерировать варианты из КИМа "{{ this.name }}"</h1>
     <ul>
       <li v-for="section in sections" :key="section.id">
         {{ section.title }}
@@ -26,6 +26,7 @@ export default {
   data() {
     return {
       id: -1,
+      name: "",
       cmms: [],
       sections: [],
       section: "",
@@ -36,6 +37,7 @@ export default {
   },
   mounted() {
     this.id = this.$route.params.id;
+    this.name = this.$route.params.name;
     this.getSections();
   },
   methods: {
@@ -64,7 +66,6 @@ export default {
     },
     createVariants() {
       const path = `http://172.18.150.140:8083/cmms/${this.id}`;
-      console.log(this.sections);
       axios
         .post(
           path,

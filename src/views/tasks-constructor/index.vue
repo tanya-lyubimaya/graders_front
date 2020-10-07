@@ -63,7 +63,7 @@
             Открыть КИМ
           </el-button>
           <el-button
-            @click.native.prevent="manageCMM(scope.row.id)"
+            @click.native.prevent="manageCMM(scope.row.id, scope.row.name)"
             size="small"
           >
             Управление КИМом
@@ -253,8 +253,8 @@ export default {
     openCMM(link) {
       window.open(link, "_blank");
     },
-    manageCMM(CMMid) {
-      this.$router.push({ name: "Manage CMM", params: { id: CMMid } });
+    manageCMM(CMMid, CMMname) {
+      this.$router.push({ name: "Manage CMM", params: { id: CMMid, name: CMMname } });
     },
     openCourse(index) {
       window.open(this.courses[index].alternate_link, "_blank");
