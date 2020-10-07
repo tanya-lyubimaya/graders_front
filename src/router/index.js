@@ -98,16 +98,9 @@ export const constantRoutes = [
         path: '/for_teachers/tasks_constructor/:id/create_variants',
         name: 'Create Variants',
         component: () => import('@/views/tasks-constructor/cmm_create_variants'),
-        meta: { title: 'Сгенерировать варианты' },
+        meta: { title: 'Раздать задания' },
         hidden: true
-      },
-      {
-        path: '/for_teachers/tasks_constructor/:id/give_out_variants',
-        name: 'Give Out Variants',
-        component: () => import('@/views/tasks-constructor/cmm_give_out_variants'),
-        meta: { title: 'Раздать варианты' },
-        hidden: true
-      },
+      }
     ]
   },
 

@@ -6,9 +6,6 @@
       сформированным из него заданиям
     </h3>
     <el-button type="primary" @click="handleCreateVariants()"
-      >Сгенерировать варианты</el-button
-    >
-    <el-button type="primary" @click="handleGiveOutVariants()"
       >Раздать варианты</el-button
     >
   </div>
