@@ -16,7 +16,7 @@
             v-for="course in courses"
             :key="course.id"
             :label="course.name"
-            :value="course.name"
+            :value="course.id"
           >
           </el-option>
         </el-select>
@@ -168,13 +168,13 @@ export default {
             deadline: this.form.timeDeadline,
             scheduled_time: this.form.timePostTasks,
             sections: this.sections
-          }
-          /*{
+          },
+          {
               headers: {
-                "X-API-KEY": "7729975492c74225878bd0f54be97b6b",
+                //"X-API-KEY": "7729975492c74225878bd0f54be97b6b",
                 withCredentials: true,
               },
-            }*/
+            }
       )
         .then(
           (res) => {
