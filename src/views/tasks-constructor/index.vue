@@ -146,6 +146,7 @@ export default {
     return {
       cmms: [],
       courses: [],
+      tasks: [],
       currentCmm: "",
       search: "",
       searchCMM: "",
@@ -158,6 +159,7 @@ export default {
   created() {
     this.getCourses();
     this.getCMMs();
+    this.getTasks();
   },
   methods: {
     getCMMs() {
@@ -182,6 +184,18 @@ export default {
         }
       );
     },
+    getTasks() {
+      const path = "https://constructor.auditory.ru/tasks";
+      axios.get(path).then(
+        (res) => {
+          this.tasks = res.data.tasks;
+          console.log(this.tasks);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    },
     addCMM() {
       (this.clickedAddCMM = true), this.createCMM;
     },
@@ -194,7 +208,7 @@ export default {
         });
         axios
           .post(
-            "http://172.18.150.140:8083/cmms",
+            "https://constructor.auditory.ru/cmms",
             {
               name: this.cmmName,
               description: this.cmmDescription,
@@ -254,7 +268,10 @@ export default {
       window.open(link, "_blank");
     },
     manageCMM(CMMid, CMMname) {
-      this.$router.push({ name: "Manage CMM", params: { id: CMMid, name: CMMname } });
+      this.$router.push({
+        name: "Manage CMM",
+        params: { id: CMMid, name: CMMname },
+      });
     },
     openCourse(index) {
       window.open(this.courses[index].alternate_link, "_blank");
@@ -262,7 +279,7 @@ export default {
     deleteCMM(id, cmms) {
       let i = cmms.map((item) => item.id).indexOf(id);
       this.$delete(this.cmms, i);
-      const path = `http://172.18.150.140:8083/cmms/${id}`;
+      const path = `https://constructor.auditory.ru/cmms/${id}`;
       axios
         .delete(path)
         .then(() => {

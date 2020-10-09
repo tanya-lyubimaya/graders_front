@@ -121,7 +121,7 @@ export default {
       console.log(value);
     },
     getCourses() {
-      const path = "http://172.18.150.140:8083/courses";
+      const path = "https://constructor.auditory.ru/courses";
       axios.get(path).then(
         (res) => {
           this.courses = res.data.courses;
@@ -138,7 +138,7 @@ export default {
       // createVariants(spreadsheetInfo,spreadsheetId);
     },
     getSections() {
-      const path = `http://172.18.150.140:8083/cmms/${this.id}/sections`;
+      const path = `https://constructor.auditory.ru/cmms/${this.id}/sections`;
       axios.get(path).then(
         (res) => {
           this.sections = res.data.sections;
@@ -154,7 +154,8 @@ export default {
       });
     },
     createVariants() {
-      const path = `http://172.18.150.140:8083/cmms/${this.id}/tasks`;
+      axios.defaults.withCredentials = true;
+      const path = `https://constructor.auditory.ru/cmms/${this.id}/tasks`;
       this.sections.forEach(function (value, i) {
         delete value["title"];
         delete value["questions"];
