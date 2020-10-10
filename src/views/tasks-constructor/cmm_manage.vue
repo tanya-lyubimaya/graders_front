@@ -1,5 +1,7 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" style="max-width: 90%">
+    <el-form label-width="60px">
+      <el-form-item>
     <h1>Управление КИМом "{{ this.name }}"</h1>
     <h3>
       Здесь позже будет представлена статистика по текущему КИМу и
@@ -8,6 +10,8 @@
     <el-button type="primary" @click="handleCreateVariants()"
       >Раздать варианты</el-button
     >
+    </el-form-item>
+    </el-form>
   </div>
 </template>
 

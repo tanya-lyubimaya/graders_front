@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" style="max-width: 75%">
     <el-form ref="form" :model="form" label-width="120px">
       <el-form-item>
         <h3>
@@ -27,7 +27,7 @@
           <span style="color: #f00">*</span>
         </p>
         <el-input
-          style="width: 50%"
+          style="width: 55.7%"
           v-model="form.taskname"
           placeholder="Например: Контрольная работа 1"
         ></el-input>
@@ -40,7 +40,7 @@
         </p>
         <ul style="list-style-type: none">
           <li v-for="section in sections" :key="section.id">
-            <h4>
+            <p>
               <el-input-number
                 controls-position="right"
                 v-model="section.numOfQuestions"
@@ -49,7 +49,7 @@
                 :max="section.questions"
               ></el-input-number
               >⠀⠀{{ section.title }}
-            </h4>
+            </p>
           </li>
         </ul>
       </el-form-item>
@@ -61,6 +61,7 @@
             type="datetime"
             style="width: 90%"
             placeholder="Выберите дату и время"
+            :clearable="false"
           />
         </el-col>
         <el-col :span="7">
@@ -73,6 +74,7 @@
             type="datetime"
             style="width: 90%"
             placeholder="Выберите дату и время"
+            :clearable="false"
           />
         </el-col>
       </el-form-item>
@@ -93,6 +95,7 @@ export default {
   data() {
     return {
       id: -1,
+      falseBool: false,
       name: "",
       courses: [],
       sections: [],
@@ -118,7 +121,7 @@ export default {
   },
   methods: {
     handleChange(value) {
-      console.log(value);
+      //console.log(value);
     },
     getCourses() {
       const path = "https://constructor.auditory.ru/courses";
@@ -130,12 +133,6 @@ export default {
           console.error(error);
         }
       );
-    },
-    onSubmit() {
-      // this.$message('submit!')
-      // const spreadsheetInfo = JSON.parse(this.dataset.spreadsheetInfo);
-      // const spreadsheetId = this.dataset.spreadsheetId;
-      // createVariants(spreadsheetInfo,spreadsheetId);
     },
     getSections() {
       const path = `https://constructor.auditory.ru/cmms/${this.id}/sections`;
@@ -156,57 +153,103 @@ export default {
     createVariants() {
       axios.defaults.withCredentials = true;
       const path = `https://constructor.auditory.ru/cmms/${this.id}/tasks`;
+      var datePost = new Date(this.form.timePostTasks);
+      var dateDeadline = new Date(this.form.timeDeadline);
+      var currentDate = new Date();
+      var notAllSectionsDefined = false;
+
       this.sections.forEach(function (value, i) {
-        delete value["title"];
-        delete value["questions"];
+        if (value["numOfQuestions"] === undefined) {
+          notAllSectionsDefined = true;
+        }
       });
-      axios
-        .post(
-          path,
-          {
-            course_id: this.form.course,
-            name: this.form.taskname,
-            deadline: this.form.timeDeadline,
-            scheduled_time: this.form.timePostTasks,
-            sections: this.sections
-          },
-          {
+
+      if (this.form.course === "") {
+        this.$message({
+          showClose: true,
+          message: "Не задан курс!",
+          type: "warning",
+        });
+      } else if (this.form.taskname === "") {
+        this.$message({
+          showClose: true,
+          message: "Не задано название задания!",
+          type: "warning",
+        });
+      } else if (notAllSectionsDefined) {
+        this.$message({
+          showClose: true,
+          message: "Пожалуйста, задайте нужное число вопросов из каждой темы!",
+          type: "warning",
+        });
+      } else if (this.form.timePostTasks === "") {
+        var now = new Date();
+        this.form.timePostTasks = now;
+      } else if (this.form.timeDeadline === "") {
+        this.$message({
+          showClose: true,
+          message: "Не задан дедлайн!",
+          type: "warning",
+        });
+      } else if (datePost < new Date(currentDate.getTime())) {
+        this.$message({
+          showClose: true,
+          message: "Слишком раннее время публикации!",
+          type: "warning",
+        });
+      } else if (this.form.timePostTasks > this.form.timeDeadline) {
+        this.$message({
+          showClose: true,
+          message: "Время публикации назначено после дедлайна!",
+          type: "warning",
+        });
+      } else {
+        this.sections.forEach(function (value, i) {
+          delete value["title"];
+          delete value["questions"];
+        });
+        axios
+          .post(
+            path,
+            {
+              course_id: this.form.course,
+              name: this.form.taskname,
+              deadline: this.form.timeDeadline,
+              scheduled_time: this.form.timePostTasks,
+              sections: this.sections,
+            },
+            {
               headers: {
                 //"X-API-KEY": "7729975492c74225878bd0f54be97b6b",
                 withCredentials: true,
               },
             }
-      )
-        .then(
-          (res) => {
-            if (res.data.status === "success") {
-              this.$message({
-                showClose: true,
-                message: "Варианты заданий начали генерироваться!",
-                type: "success",
-              });
-            } else {
-              this.$message({
-                showClose: true,
-                message: "Ошибка при генерации вариантов",
-                type: "error",
-              });
+          )
+          .then(
+            (res) => {
+              if (res.data.status === "success") {
+                this.$message({
+                  showClose: true,
+                  message: "Варианты заданий начали генерироваться!",
+                  type: "success",
+                });
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: "Ошибка при генерации вариантов",
+                  type: "error",
+                });
+              }
+            },
+            (error) => {
+              console.error(error);
             }
-          },
-          (error) => {
-            console.error(error);
-          }
-        )
-        .catch(function () {
-          console.log("FAILURE!!");
-        });
+          )
+          .catch(function () {
+            console.log("FAILURE!!");
+          });
+      }
     },
-  },
-  onCancel() {
-    this.$message({
-      message: "cancel!",
-      type: "warning",
-    });
   },
 };
 </script>

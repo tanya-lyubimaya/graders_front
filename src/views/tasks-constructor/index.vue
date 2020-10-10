@@ -1,122 +1,142 @@
 <template>
-  <div class="wrapper">
-    <h1 class="title">База заданий</h1>
-    <h3>Таблица курсов</h3>
-    <el-table
-      :data="
-        courses.filter(
-          (data) =>
-            !search || data.name.toLowerCase().includes(search.toLowerCase())
-        )
-      "
-      :default-sort="{ prop: 'creation_time', order: 'descending' }"
-      style="width: 100%"
-    >
-      <el-table-column label="Название курса" prop="name"> </el-table-column>
-      <el-table-column label="Число студентов" prop="students_count">
-      </el-table-column>
-      <el-table-column label="Число преподавателей" prop="teachers_count">
-      </el-table-column>
-      <el-table-column
-        label="Дата создания курса"
-        prop="creation_time"
-        sortable
-      >
-      </el-table-column>
-      <el-table-column label="Действия">
-        <template slot-scope="scope">
-          <el-button size="mini" @click="openCourse(scope.$index, scope.row)"
-            >Перейти к курсу</el-button
+  <div class="wrapper" style="max-width: 90%">
+    <el-form label-width="60px">
+      <el-form-item>
+        <h1 class="title">База заданий</h1>
+        <h3>Таблица курсов</h3>
+        <el-table
+          :data="
+            courses.filter(
+              (data) =>
+                !search ||
+                data.name.toLowerCase().includes(search.toLowerCase())
+            )
+          "
+          :default-sort="{ prop: 'creation_time', order: 'descending' }"
+          style="width: 100%"
+        >
+          <el-table-column label="Название курса" prop="name">
+          </el-table-column>
+          <el-table-column label="Число студентов" prop="students_count">
+          </el-table-column>
+          <el-table-column label="Число преподавателей" prop="teachers_count">
+          </el-table-column>
+          <el-table-column
+            label="Дата создания курса"
+            prop="creation_time"
+            sortable
           >
-        </template>
-      </el-table-column>
-      <el-table-column align="right">
-        <template slot="header" slot-scope="scope">
-          <el-input
-            v-model="search"
-            size="mini"
-            placeholder="Введите название курса для поиска"
-          />
-        </template>
-      </el-table-column>
-    </el-table>
+          </el-table-column>
+          <el-table-column label="Действия">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                @click="openCourse(scope.$index, scope.row)"
+                >Перейти к курсу</el-button
+              >
+            </template>
+          </el-table-column>
+          <el-table-column align="right">
+            <template slot="header" slot-scope="scope">
+              <el-input
+                v-model="search"
+                size="mini"
+                placeholder="Введите название курса для поиска"
+              />
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-form-item>
 
-    <h3>Таблица КИМов</h3>
-    <el-table
-      :data="
-        cmms.filter(
-          (data) =>
-            !searchCMM ||
-            data.name.toLowerCase().includes(searchCMM.toLowerCase())
-        )
-      "
-      :default-sort="{ prop: 'created_at', order: 'descending' }"
-      style="width: 100%"
-      max-height="300"
-    >
-      <el-table-column type="expand">
-        <template slot-scope="scope">
-          <el-button
-            @click.native.prevent="openCMM(scope.row.spreadsheet_link)"
-            size="small"
+      <el-form-item>
+        <h3>Таблица КИМов</h3>
+        <el-table
+          :data="
+            cmms.filter(
+              (data) =>
+                !searchCMM ||
+                data.name.toLowerCase().includes(searchCMM.toLowerCase())
+            )
+          "
+          :default-sort="{ prop: 'created_at', order: 'descending' }"
+          style="width: 100%"
+          max-height="300"
+        >
+          <el-table-column type="expand">
+            <template slot-scope="scope">
+              <el-button
+                @click.native.prevent="openCMM(scope.row.spreadsheet_link)"
+                size="small"
+              >
+                Открыть КИМ
+              </el-button>
+              <el-button
+                @click.native.prevent="manageCMM(scope.row.id, scope.row.name)"
+                size="small"
+              >
+                Управление КИМом
+              </el-button>
+              <el-button
+                @click.native.prevent="deleteCMM(scope.row.id, cmms)"
+                type="danger"
+                size="small"
+              >
+                Удалить КИМ
+              </el-button>
+            </template>
+          </el-table-column>
+          <el-table-column prop="name" label="Название КИМа"> </el-table-column>
+          <el-table-column prop="description" label="Описание КИМа">
+          </el-table-column>
+          <el-table-column
+            prop="created_at"
+            label="Дата создания КИМа"
+            sortable
           >
-            Открыть КИМ
-          </el-button>
-          <el-button
-            @click.native.prevent="manageCMM(scope.row.id, scope.row.name)"
-            size="small"
-          >
-            Управление КИМом
-          </el-button>
-          <el-button
-            @click.native.prevent="deleteCMM(scope.row.id, cmms)"
-            type="danger"
-            size="small"
-          >
-            Удалить КИМ
-          </el-button>
-        </template>
-      </el-table-column>
-      <el-table-column prop="name" label="Название КИМа"> </el-table-column>
-      <el-table-column prop="description" label="Описание КИМа">
-      </el-table-column>
-      <el-table-column prop="created_at" label="Дата создания КИМа" sortable>
-      </el-table-column>
-      <el-table-column align="right">
-        <template slot="header" slot-scope="scope">
+          </el-table-column>
+          <el-table-column align="right">
+            <template slot="header" slot-scope="scope">
+              <el-input
+                v-model="searchCMM"
+                size="mini"
+                placeholder="Введите название КИМа для поиска"
+              />
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-form-item>
+
+      <el-form-item>
+<el-button type="primary" :disabled="cmmLoading" @click="addCMM()"
+          >Добавить КИМ</el-button
+        >
+        <p> </p>
+<div v-if="clickedAddCMM">
           <el-input
-            v-model="searchCMM"
-            size="mini"
-            placeholder="Введите название КИМа для поиска"
-          />
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-button type="primary" :disabled="cmmLoading" @click="addCMM()"
-      >Добавить КИМ</el-button
-    >
-    <div v-if="clickedAddCMM">
-      <el-input
-        type="text"
-        placeholder="Название КИМа"
-        v-model="cmmName"
-        maxlength="100"
-        show-word-limit
-      >
-      </el-input>
-      <div style="margin: 20px 0"></div>
-      <el-input
-        type="textarea"
-        placeholder="Описание КИМа"
-        v-model="cmmDescription"
-        maxlength="300"
-        show-word-limit
-      >
-      </el-input>
-      <el-button type="primary" :loading="cmmLoading" @click="createCMM()"
-        >Создать КИМ</el-button
-      >
-    </div>
+            type="text"
+            placeholder="Название КИМа"
+            v-model="cmmName"
+            maxlength="100"
+            show-word-limit
+          >
+          </el-input>
+          <div style="margin: 20px 0"></div>
+          <el-input
+            type="textarea"
+            placeholder="Описание КИМа"
+            v-model="cmmDescription"
+            maxlength="300"
+            show-word-limit
+          >
+          </el-input>
+          <p> </p>
+          <el-button :loading="cmmLoading" @click="createCMM()"
+            >Создать КИМ</el-button
+          >
+        </div>
+      </el-form-item>
+    </el-form>
+
     <!--h3>Таблица грейдеров</h3>
     <el-table :data="courses" style="width: 100%" max-height="300">
       <el-table-column fixed prop="name" label="Название грейдера" width="250">
