@@ -23,7 +23,7 @@
           </el-table-column>
           <el-table-column
             label="Дата создания курса"
-            prop="creation_time"
+            prop="human_creation_dt"
             sortable
           >
           </el-table-column>
@@ -89,7 +89,7 @@
           <el-table-column prop="description" label="Описание КИМа">
           </el-table-column>
           <el-table-column
-            prop="created_at"
+            prop="human_creation_dt"
             label="Дата создания КИМа"
             sortable
           >
@@ -107,11 +107,11 @@
       </el-form-item>
 
       <el-form-item>
-<el-button type="primary" :disabled="cmmLoading" @click="addCMM()"
+        <el-button type="primary" :disabled="cmmLoading" @click="addCMM()"
           >Добавить КИМ</el-button
         >
-        <p> </p>
-<div v-if="clickedAddCMM">
+        <p></p>
+        <div v-if="clickedAddCMM">
           <el-input
             type="text"
             placeholder="Название КИМа"
@@ -129,7 +129,7 @@
             show-word-limit
           >
           </el-input>
-          <p> </p>
+          <p></p>
           <el-button :loading="cmmLoading" @click="createCMM()"
             >Создать КИМ</el-button
           >
@@ -160,6 +160,7 @@
 
 <script>
 import axios from "axios";
+import moment from "moment";
 
 export default {
   data() {
@@ -176,7 +177,7 @@ export default {
       clickedAddCMM: false,
     };
   },
-  created() {
+  beforeMount() {
     this.getCourses();
     this.getCMMs();
     this.getTasks();
@@ -187,6 +188,10 @@ export default {
       axios.get(path).then(
         (res) => {
           this.cmms = res.data.cmms;
+          this.cmms.forEach(function (element) {
+            var temp = new Date(element.created_at);
+            element.human_creation_dt = temp.toLocaleString();
+          });
         },
         (error) => {
           console.error(error);
@@ -198,6 +203,10 @@ export default {
       axios.get(path).then(
         (res) => {
           this.courses = res.data.courses;
+          this.courses.forEach(function (element) {
+            var temp = new Date(element.creation_time);
+            element.human_creation_dt = temp.toLocaleString();
+          });
         },
         (error) => {
           console.error(error);
@@ -209,7 +218,6 @@ export default {
       axios.get(path).then(
         (res) => {
           this.tasks = res.data.tasks;
-          console.log(this.tasks);
         },
         (error) => {
           console.error(error);
