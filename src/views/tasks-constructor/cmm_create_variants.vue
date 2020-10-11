@@ -84,7 +84,7 @@
           <span style="color: #f00">*</span>
         </p>
         <el-select
-          v-model="assignees[0].google_id"
+          v-model="assignees.google_id"
           filterable
           placeholder="Выберите группу"
         >
@@ -158,12 +158,12 @@ export default {
       },
       assignment_type: "INDIVIDUAL_STUDENTS",
       assignees:
-        [{
+        {
           name: null,
           google_id: "",
           type: "GROUP",
           action: "INCLUDE",
-        }],
+        },
     };
   },
   created() {
@@ -282,7 +282,7 @@ export default {
               scheduled_time: this.form.timePostTasks,
               sections: this.sections,
               assignment_type: this.assignment_type,
-              assignees: this.assignees
+              assignees: [this.assignees]
             },
             {
               headers: {
