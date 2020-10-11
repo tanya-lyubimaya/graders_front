@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Vue Admin Template',
+  title: 'CMMs & Graders Constructor',
 
   /**
    * @type {boolean} true | false

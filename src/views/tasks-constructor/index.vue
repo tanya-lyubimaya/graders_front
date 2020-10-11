@@ -160,7 +160,6 @@
 
 <script>
 import axios from "axios";
-import moment from "moment";
 
 export default {
   data() {
@@ -184,7 +183,7 @@ export default {
   },
   methods: {
     getCMMs() {
-      const path = "http://172.18.150.140:8083/cmms";
+      const path = "https://constructor.auditory.ru/cmms";
       axios.get(path).then(
         (res) => {
           this.cmms = res.data.cmms;
@@ -199,7 +198,7 @@ export default {
       );
     },
     getCourses() {
-      const path = "http://172.18.150.140:8083/courses";
+      const path = "https://constructor.auditory.ru/courses";
       axios.get(path).then(
         (res) => {
           this.courses = res.data.courses;
