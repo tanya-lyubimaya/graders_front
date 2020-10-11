@@ -84,7 +84,7 @@
           <span style="color: #f00">*</span>
         </p>
         <el-select
-          v-model="assignees.google_id"
+          v-model="assignees[0].google_id"
           filterable
           placeholder="Выберите группу"
         >
@@ -158,12 +158,12 @@ export default {
       },
       assignment_type: "INDIVIDUAL_STUDENTS",
       assignees:
-        {
+        [{
           name: null,
           google_id: "",
           type: "GROUP",
           action: "INCLUDE",
-        },
+        }],
     };
   },
   created() {
@@ -213,6 +213,8 @@ export default {
       var dateDeadline = new Date(this.form.timeDeadline);
       var currentDate = new Date();
       var notAllSectionsDefined = false;
+
+      console.log(this.assignees)
 
       this.sections.forEach(function (value, i) {
         if (value["numOfQuestions"] === undefined) {
