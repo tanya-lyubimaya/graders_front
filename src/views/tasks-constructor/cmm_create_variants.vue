@@ -78,7 +78,25 @@
           />
         </el-col>
       </el-form-item>
-      <el-form-item> </el-form-item>
+      <el-form-item>
+        <p>
+          Выберите группу, студентам которой нужно раздать задания
+          <span style="color: #f00">*</span>
+        </p>
+        <el-select
+          v-model="assignees.google_id"
+          filterable
+          placeholder="Выберите группу"
+        >
+          <el-option
+            v-for="group in groups"
+            :key="group.id"
+            :label="group.name"
+            :value="group.id"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="createVariants()"
           >Раздать задания</el-button
@@ -102,12 +120,50 @@ export default {
       questions: {},
       section: "",
       numOfVariants: -1,
+      groups: [
+        {
+          id: "02jxsxqh3fr03bb",
+          name: "Поток БИВ19x",
+        },
+        {
+          id: "02u6wntf3s35zof",
+          name: "БИВ191",
+        },
+        {
+          id: "00sqyw643da7y61",
+          name: "БИВ192",
+        },
+        {
+          id: "00rjefff133gltr",
+          name: "БИВ193",
+        },
+        {
+          id: "03jtnz0s3beozki",
+          name: "БИВ194",
+        },
+        {
+          id: "03ep43zb18uqzzn",
+          name: "БИВ195",
+        },
+        {
+          id: "03tbugp14l67xlv",
+          name: "БИВ196",
+        },
+      ],
       form: {
         course: "",
         taskname: "",
         timePostTasks: "",
         timeDeadline: "",
       },
+      assignment_type: "INDIVIDUAL_STUDENTS",
+      assignees:
+        {
+          name: null,
+          google_id: "",
+          type: "GROUP",
+          action: "INCLUDE",
+        },
     };
   },
   created() {
@@ -203,6 +259,12 @@ export default {
           message: "Время публикации назначено после дедлайна!",
           type: "warning",
         });
+      } else if (this.assignees.google_id === "") {
+        this.$message({
+          showClose: true,
+          message: "Не выбрана группа!",
+          type: "warning",
+        });
       } else {
         this.sections.forEach(function (value, i) {
           delete value["title"];
@@ -217,6 +279,8 @@ export default {
               deadline: this.form.timeDeadline,
               scheduled_time: this.form.timePostTasks,
               sections: this.sections,
+              assignment_type: this.assignment_type,
+              assignees: this.assignees
             },
             {
               headers: {

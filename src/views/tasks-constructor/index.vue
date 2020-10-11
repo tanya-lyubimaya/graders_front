@@ -184,7 +184,7 @@ export default {
   methods: {
     getCMMs() {
       const path = "https://constructor.auditory.ru/cmms";
-      axios.get(path).then(
+      axios.get(path, { withCredentials: true }).then(
         (res) => {
           this.cmms = res.data.cmms;
           this.cmms.forEach(function (element) {
@@ -199,7 +199,7 @@ export default {
     },
     getCourses() {
       const path = "https://constructor.auditory.ru/courses";
-      axios.get(path).then(
+      axios.get(path, { withCredentials: true }).then(
         (res) => {
           this.courses = res.data.courses;
           this.courses.forEach(function (element) {
@@ -214,7 +214,7 @@ export default {
     },
     getTasks() {
       const path = "https://constructor.auditory.ru/tasks";
-      axios.get(path).then(
+      axios.get(path, { withCredentials: true }).then(
         (res) => {
           this.tasks = res.data.tasks;
         },
@@ -240,12 +240,6 @@ export default {
               name: this.cmmName,
               description: this.cmmDescription,
             }
-            /*{
-            headers: {
-            "X-API-KEY": "7729975492c74225878bd0f54be97b6b",
-            withCredentials: true,
-            },
-          }*/
           )
           .then(
             (res) => {
